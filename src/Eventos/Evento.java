@@ -11,7 +11,7 @@ public abstract class Evento implements EventoBase{
     private int precio;
     private Map<Asiento, Boolean> asientosDisponibles;
     //favorito
-
+    //Ese we
 
     @Override
     public String mostrarInfo() {
