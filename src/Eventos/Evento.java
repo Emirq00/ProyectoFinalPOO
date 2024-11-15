@@ -1,11 +1,12 @@
 package Eventos;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public abstract class Evento implements EventoBase{
     private String titulo;
     private String tipo;
-    private String fecha;
+    private LocalDate fecha;
     private String ubicacion;
     private List<String> participantes;
     private int precio;

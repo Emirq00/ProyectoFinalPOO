@@ -1,4 +1,4 @@
-package Boletos;
+package Organizacion;
 
 public class Boleto {
     private Evento evento;
