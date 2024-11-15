@@ -123,9 +123,8 @@ public abstract class Vuelo implements Serializable{
      * Método general en el que se mostrará toda la información asociada a un vuelo.
      * @return Retorna la cadena de cartacteres con toda la información del vuelo.
      */
-    public String mostrarInformacionVuelo() throws Error{
-        
-        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: $"+precio+"\t          Origen: "+origen+"     \t     Destino: "+destino);
+    public String mostrarInformacionVuelo(){
+        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precio+"\t      Origen: "+origen+"\t      Destino: "+destino);
     }
 
     /**
