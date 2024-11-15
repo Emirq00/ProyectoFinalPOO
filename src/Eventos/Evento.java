@@ -1,0 +1,31 @@
+package Eventos;
+
+import java.util.List;
+
+public abstract class Evento implements EventoBase{
+    private String titulo;
+    private String tipo;
+    private String fecha;
+    private String ubicacion;
+    private List<String> participantes;
+    private int precio;
+    private Map<Asiento, Boolean> asientosDisponibles;
+    //favorito
+
+
+    @Override
+    public String mostrarInfo() {
+        return "";
+    }
+
+    @Override
+    public void marcarFavorito() {
+        //implementacion
+    }
+
+    public Evento buscarEventoPorFiltro(List<Filtro> filtros){
+        //implementacion
+    }
+
+
+}
