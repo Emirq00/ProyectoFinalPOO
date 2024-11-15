@@ -1,5 +1,6 @@
 package Tickets.FormatoTickets;
 
+import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.*;
@@ -11,7 +12,7 @@ import java.time.format.*;
  * La información general que tendrán los vuelos son: Precio, Origen, Destino, Tiempo en días entre el primer vuelo de ida y el segundo
  * vuelo de regreso (en caso de que se trate de un vuelo redondo) y la Fecha de compra.
  */
-public abstract class Vuelo {
+public abstract class Vuelo implements Serializable{
     protected int precio;
     protected String origen;
     protected String destino;
@@ -116,6 +117,15 @@ public abstract class Vuelo {
      */
     public void setTipoDeVuelo(String tipoDeVuelo) {
         this.tipoDeVuelo = tipoDeVuelo;
+    }
+
+    /**
+     * Método general en el que se mostrará toda la información asociada a un vuelo.
+     * @return Retorna la cadena de cartacteres con toda la información del vuelo.
+     */
+    public String mostrarInformacionVuelo() throws Error{
+        
+        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: $"+precio+"\t          Origen: "+origen+"     \t     Destino: "+destino);
     }
 
     /**
