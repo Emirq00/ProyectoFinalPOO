@@ -1,7 +1,10 @@
 package Eventos;
 
+import Organizacion.Asiento;
+
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Evento implements EventoBase{
     private String titulo;

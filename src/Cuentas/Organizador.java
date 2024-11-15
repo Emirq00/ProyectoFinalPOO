@@ -1,6 +1,8 @@
 package Cuentas;
 
-import org.w3c.dom.events.Event;
+import Eventos.Evento;
+
+import java.util.List;
 
 public class Organizador extends Usuario{
     private List<Evento> EventosRealizados;
@@ -14,6 +16,7 @@ public class Organizador extends Usuario{
     }
 
     public String verIngresos(Evento evento){
+        return "";
         //implementacion
     }
 

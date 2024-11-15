@@ -1,5 +1,8 @@
 package Organizacion;
 
+import Eventos.Evento;
+import Pagos.MetodoPago;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class Compra {
     }
 
     public int calcularCostoTotal(){
+        return -1;
         //implementacion
     }
 

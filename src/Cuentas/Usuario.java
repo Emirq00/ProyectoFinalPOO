@@ -1,6 +1,10 @@
 package Cuentas;
 
+import Eventos.Evento;
+import Pagos.MetodoPago;
+
 import java.util.List;
+import java.util.Set;
 
 public abstract class Usuario implements UsuarioBase {
     private String nombre;
@@ -68,6 +72,7 @@ public abstract class Usuario implements UsuarioBase {
     }
 
     public Evento buscarEvento(String busqueda){
+        return null;
         //implementacion
     }
 
