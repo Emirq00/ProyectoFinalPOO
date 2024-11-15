@@ -13,6 +13,9 @@ public class Compra {
     private int cargosAdicionales;
     private String estado;
 
+    //Dentro de la clase MenuPrincipalCliente hay un método que nos debe permitir hacer la compra de los boletos, entonces 
+    //ahi se hará la conexión entre el menú y esta clase
+    
     public void iniciarCompra(Evento evento, List<Asiento> asientos){
         //implementacion
     }
@@ -23,7 +26,7 @@ public class Compra {
     }
 
     public void generarResumenCompra(){
-        //implementacion
+        //Dentro de la implementación de los tickets, hay un método que se encarga de imprimir el resumen de la compra
     }
 
     public void confirmarCompra(){

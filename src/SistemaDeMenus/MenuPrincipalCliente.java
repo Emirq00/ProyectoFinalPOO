@@ -1,0 +1,51 @@
+package SistemaDeMenus;
+
+import java.util.*;
+
+/**
+ * Clase donde mostraremos un menú general con las diferentes operaciones que podemos hacer posterior al inicio de sesion, 
+ * entre los que estan la consulta de los diferntes vuelos, salir al menu de inicio de sesión, descargar los boletos 
+ * los menús, para las implementaciones de los diferentes árboles se manda a llamar un método con un menú secundario.
+ */
+public class MenuPrincipalCliente extends Menu{
+
+    /**
+     * Método main en el que mostramos el menú general con las diferentes opciones. El menú se repite indefinidamente
+     * permitiendo al usuario realizar cualquier operación del sistema de manera ininterrumpida, para finalizar el programa el
+     * usuario deberá ingresar la opción señalada en el menú como "Salir", permitiendo así romper el bucle while.
+     */
+    public static void menuPrincipal() {
+        int decision=0;
+
+        do{
+            System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
+            System.out.println("1.- Mostrar vuelos disponibles");
+            System.out.println("2.- Comprar vuelos");
+            System.out.println("3.- Descargar boletos");
+            System.out.println("4.- Salir");
+            do{
+                System.out.print("Ingresa tu entrada: ");
+                incorrectEntry=false;
+                try {
+                    decision = scanner.nextInt();
+                    if(decision<1 || decision>4){
+                        System.out.println("* Ingrese una entrada válida");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("* Ingrese una entrada numérica");
+                    scanner.nextLine();
+                    incorrectEntry=true;
+                }
+            } while (incorrectEntry || decision<1 || decision>4);
+
+            switch (decision) {
+                case 1->{} //Implementación de la consulta de vuelos
+                case 2->{} //Implementación de la compra de vuelos
+                case 3->{} //Implementación de la descarga de boletos
+                case 4->scanner.close();
+                default->System.out.println("* Ingrese una opción válida");
+            }
+        } while (decision!=4);
+        System.err.println("Saliendo...");
+    }
+}
