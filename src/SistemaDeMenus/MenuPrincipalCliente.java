@@ -16,9 +16,8 @@ public class MenuPrincipalCliente extends Menu{
      * permitiendo al usuario realizar cualquier operación del sistema de manera ininterrumpida, para finalizar el programa el
      * usuario deberá ingresar la opción señalada en el menú como "Salir", permitiendo así romper el bucle while.
      */
-    public static void menuPrincipal() {
+    public static void main() {
         int decision=0;
-
         do{
             System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
             System.out.println("1.- Mostrar vuelos disponibles");

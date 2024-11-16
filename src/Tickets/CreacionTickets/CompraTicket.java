@@ -55,6 +55,6 @@ public class CompraTicket{
         catch (IOException e){
             System.out.println("Error: " + e.getMessage());
         }
-        SistemaDeMenus.MenuPrincipalCliente.menuPrincipal();
+        SistemaDeMenus.MenuPrincipalCliente.main();
     }
 }
