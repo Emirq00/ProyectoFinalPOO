@@ -51,7 +51,7 @@ public class Transferencia {
 
         // Simular alguna lógica de transferencia, como descontar saldo de la cuenta origen
         // Aquí podrías realizar validaciones adicionales
-        this.boleto.setPropietario(this.cuentaDestino.getPropietario());
+        this.boleto.setPropietario(this.cuentaDestino.getOwner());
         this.estado = "Completada";
 
         System.out.println("Transferencia aceptada. El boleto pertenece a: "

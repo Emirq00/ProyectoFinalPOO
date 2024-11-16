@@ -1,11 +1,13 @@
 package Pagos;
 
+import Cuentas.Usuario;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Random;
 
 public class TarjetaCredito extends MetodoPago{
-    private String owner;
+    private Usuario owner;
     private int numeroTarjeta;
     private LocalDate fechaExpiracion;
     private int cvv;
@@ -13,7 +15,7 @@ public class TarjetaCredito extends MetodoPago{
     private static Random random=new Random();
     private static final HashSet<Integer> listaTarjetas=new HashSet<>();
 
-    public TarjetaCredito(String owner){
+    public TarjetaCredito(Usuario owner){
         this.owner=owner;
         do{
             this.numeroTarjeta= random.nextInt((99999999 - 10000000) + 1) + 10000000;
@@ -46,5 +48,10 @@ public class TarjetaCredito extends MetodoPago{
         if(numeroTarjeta == this.numeroTarjeta && cvv == this.cvv)return true;
         return false;
     }
+
+    public Usuario getOwner() {
+        return owner;
+    }
+
 
 }
