@@ -55,6 +55,6 @@ public class Transferencia {
         this.estado = "Completada";
 
         System.out.println("Transferencia aceptada. El boleto pertenece a: "
-                + this.cuentaDestino.getPropietario().getNombre());
+                + this.cuentaDestino.getOwner().getNombre());
     }
 }

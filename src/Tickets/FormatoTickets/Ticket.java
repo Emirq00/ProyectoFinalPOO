@@ -18,7 +18,7 @@ public abstract class Ticket{
         return propietario;
     }
 
-    public void setPropietario(Cliente propietario) {
+    public void setPropietario(Usuario propietario) {
         this.propietario = propietario;
     }
 
