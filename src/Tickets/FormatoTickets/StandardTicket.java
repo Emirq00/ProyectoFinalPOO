@@ -37,9 +37,9 @@ public class StandardTicket extends Ticket{
             archivoImprimirBoleto.println("                                                                               ");
             archivoImprimirBoleto.println("      Boleto standar - "+vuelo.getTipoDeVuelo()                                   );
             archivoImprimirBoleto.println("      Pasajero: "+" ");
-            archivoImprimirBoleto.println("      Fecha de vuelo: "+vuelo.getFecha()                                           );
-            archivoImprimirBoleto.println("      Destino: "+vuelo.getOrigen()+"-"+vuelo.getDestino()                          );
-            archivoImprimirBoleto.println("      Asiento: "+"Método que nos devuelve el asiento");
+            archivoImprimirBoleto.println("      Fecha de vuelo: "+vuelo.getFecha()                                          );
+            archivoImprimirBoleto.println("      Destino: "+vuelo.getOrigen()+"-"+vuelo.getDestino()                         );
+            archivoImprimirBoleto.println("      Asiento: "+ asiento                                                         );
             archivoImprimirBoleto.println(" ");
             archivoImprimirBoleto.println(" ");
             archivoImprimirBoleto.print("           ");

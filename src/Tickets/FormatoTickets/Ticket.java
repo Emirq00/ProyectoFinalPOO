@@ -1,5 +1,7 @@
 package Tickets.FormatoTickets;
 
+import java.io.Serializable;
+
 import Cuentas.Cliente;
 import Cuentas.Usuario;
 
@@ -7,12 +9,13 @@ import Cuentas.Usuario;
  *  Clase abstracta en la que definimos la estructura principal de los diferentes tickets de compra que podrán ser comprados al momento 
  *  de reservar los vuelos. La clase permite generar tickets standard, premium y vip.
  */
-public abstract class Ticket{
+public abstract class Ticket implements Serializable{
 
     private Usuario propietario;
     protected String tipoTicket;
     //Bridge
     protected Vuelo vuelo;
+    protected String asiento;
 
     public Usuario getPropietario() {
         return propietario;
@@ -32,20 +35,27 @@ public abstract class Ticket{
     }
 
     /**
-     * Método en el que podemos imprimir la información de compra del vuelo en la terminal momentos antes de que el cliente 
-     * confirme el pago de su vuelo, el uso recomendable de este método es solamente para esa situación, ya que contiene un formato
-     * específico con el que se da a entender que se trata del resumen de una compra.
-     */
-    public void mostrarInformacion(){
-        System.out.println(vuelo.mostrarInformacionCompra());
-    }
-
-    /**
      * Método en el que se recupera el vuelo asociado al ticket que se va comprar.
      * @return Variable con toda la información del vuelo asociado al ticket.
      */
     public Vuelo getVuelo() {
         return vuelo;
+    }
+
+    /**
+     * Método en el que se recupera el asiento asociado al ticket que se va comprar.
+     * @return Variable con el asiento asociado al ticket.
+     */
+    public String getAsiento() {
+        return asiento;
+    }
+
+    /**
+     * Método en el que se asigna el asiento al ticket que se va a comprar.
+     * @param asiento Variable con el asiento que se va a asignar al ticket.
+     */
+    public void setAsiento(String asiento) {
+        this.asiento = asiento;
     }
 
     /**

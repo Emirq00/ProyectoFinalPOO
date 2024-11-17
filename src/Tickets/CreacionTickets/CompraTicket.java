@@ -2,8 +2,7 @@ package Tickets.CreacionTickets;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import Tickets.FormatoTickets.*;
 
 public class CompraTicket{
@@ -37,10 +36,11 @@ public class CompraTicket{
      *
      * @param vueloSeleccionado Vuelo seleccionado anteriormente por el usuario que se asignará al momento de la compra del ticket.
      */
-    public static void comprarTicket(Vuelo vueloSeleccionado){
+    public static void comprarTicket(Vuelo vueloSeleccionado) {
         boolean entradaInvalida = false, indesicion = false;
         Ticket ticket = null;
         do {
+            vueloSeleccionado.mostrarAsientos();
             System.out.println("\n¿Qué tipo de ticket desea comprar?");
             System.out.println("1. Standard");
             System.out.println("2. Premium");
@@ -66,12 +66,45 @@ public class CompraTicket{
                     }
                 } catch (InputMismatchException e) {
                     System.out.println(" *Ingrese una entrada numérica");
+                    scanner.nextLine();
+                    entradaInvalida = true;
+                }
+            } while (entradaInvalida);
+            
+            scanner.nextLine();
+            String opcion=null;
+            do {
+                entradaInvalida = false;
+                try {
+                    System.out.print("Ingrese su asiento: ");
+                    opcion = scanner.nextLine();
+                    if(ticket.getVuelo().getAsientosDisponibles().containsKey(opcion)){
+                        if(ticket.getVuelo().getAsientosDisponibles().get(opcion)==1 && ticket instanceof StandardTicket){
+                            System.out.println("Asiento reservado exitosamente");
+                            ticket.setAsiento(opcion);
+                        }else if(ticket.getVuelo().getAsientosDisponibles().get(opcion)==2 && ticket instanceof PremiumTicket){
+                            System.out.println("Asiento reservado exitosamente");
+                            ticket.setAsiento(opcion);
+
+                        }else if(ticket.getVuelo().getAsientosDisponibles().get(opcion)==3 && ticket instanceof VipTicket){
+                            System.out.println("Asiento reservado exitosamente");
+                            ticket.setAsiento(opcion);
+                        } else {
+                            System.out.println("Ingrese un asiento asociado al tipo de ticket seleccionado");
+                            entradaInvalida = true;
+                        }
+                    } else{
+                        System.out.println("Ingrese un asiento válido");
+                        entradaInvalida = true;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println(" *Ingrese una entrada numérica");
                     entradaInvalida = true;
                 }
             } while (entradaInvalida);
 
             System.out.println("\nResumen de compra:");
-            ticket.mostrarInformacion();
+            System.out.println(ticket.getVuelo().mostrarInformacionCompra(opcion));
             System.out.println("¿Qué deseas hacer?");
             System.out.println("1. Proseguir al pago");
             System.out.println("2. Regresar a la selección de tickets");
@@ -79,8 +112,8 @@ public class CompraTicket{
             do {
                 entradaInvalida = false;
                 System.out.print("Ingrese su entrada: ");
-                int opcion = scanner.nextInt();
-                switch(opcion){
+                int op = scanner.nextInt();
+                switch(op){
                     case 1-> indesicion = false;
                     case 2-> indesicion = true;
                     case 3-> {
@@ -101,7 +134,7 @@ public class CompraTicket{
         //Ingresamos el nuevo ticket asociado a la cuenta
         ObjectOutputStream fileOut=null;
         try {
-            fileOut = new ObjectOutputStream(new FileOutputStream("src/Tickets/TicketsComprados/Fernando"));//Al final seria el nomnbre del usuario
+            fileOut = new ObjectOutputStream(new FileOutputStream("src/Tickets/TicketsComprados/Fernando"));//Al final seria el nombre del usuario
             fileOut.writeObject(ticket);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -114,5 +147,21 @@ public class CompraTicket{
         }
 
         System.out.println("¡Compra realizada con éxito!");
+    }
+
+
+    // Método para comprar un ticket y asociarlo al vuelo
+    public static boolean pago(Ticket ticket) {
+        if (ticket instanceof StandardTicket && ticket.getVuelo().ticketsStandardDisponibles > 0) {
+            ticket.getVuelo().ticketsStandardDisponibles--;
+            return true;
+        } else if (ticket instanceof PremiumTicket && ticket.getVuelo().ticketsPremiumDisponibles > 0) {
+            ticket.getVuelo().ticketsPremiumDisponibles--;
+            return true;
+        } else if (ticket instanceof VipTicket && ticket.getVuelo().ticketsVipDisponibles > 0) {
+            ticket.getVuelo().ticketsVipDisponibles--;
+            return true;
+        }
+        return false;
     }
 }

@@ -7,7 +7,7 @@ public class Ejecutable {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int opcion;
+        int opcion=0;
         do {
             System.out.println("Bienvenido a Aeroviajes");
             System.out.println("1. Iniciar Sesión");
@@ -16,11 +16,9 @@ public class Ejecutable {
             System.out.print("Seleccione una opción: ");
             if (scanner.hasNextInt()) {
                 opcion = scanner.nextInt();
-                scanner.nextLine();
             } else {
                 System.out.println("Entrada no válida, intente nuevamente");
                 scanner.nextLine();
-                continue;
             }
 
             switch (opcion) {
@@ -67,7 +65,7 @@ public class Ejecutable {
                 } else {
                     ver = true;
                     System.out.println("Inicio de sesión exitoso como Usuario");
-                    MenuPrincipalCliente.main();
+                    //MenuPrincipalCliente.main({"1", "2"});
                 }
             } else {
                 System.out.println("Datos incorrectos, intente nuevamente");

@@ -16,6 +16,19 @@ public class VueloRedondo extends Vuelo{
         this.fecha=fecha;
         this.precio=precio;
         this.tiempoDias=tiempoDias;
+        //Inicializado de los asientos y sus rangos
+        String [] letras={"A","B","C","D","E","F","G","H","I","J"};
+        for(int i=0;i<9;i++){
+            for(int j=0;j<20;j++){
+                if(j<5){
+                    asientosDisponibles.put(letras[i]+j, 3);
+                } else if (j<10){
+                    asientosDisponibles.put(letras[i]+j, 2);
+                } else{
+                    asientosDisponibles.put(letras[i]+j, 1);
+                }
+            }
+        }
     }
 
     /**
@@ -33,13 +46,14 @@ public class VueloRedondo extends Vuelo{
      *   - Tiempo en días entre los dos vuelos (ida y regreso).
      */
     @Override
-    public String mostrarInformacionCompra() {
+    public String mostrarInformacionCompra(String asiento) {
         return "==========================================\n"+
         "   Resumen de su compra:\n"+
         "   Tipo de vuelo: "+tipoDeVuelo+"\n"+
         "   Origen: "+origen+"\n"+
         "   Destino: "+destino+"\n"+
-        "   Fecha de vuelo: "+fecha+"\n"+
+        "   Asiento: "+ asiento +"\n"+
+        "   Fecha de vuelo: "+getFecha()+"\n"+
         "   Precio: "+precio+"\n"+
         "   Días entre vuelos: "+tiempoDias+" días\n"+
         "==========================================\n";
