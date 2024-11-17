@@ -74,5 +74,7 @@ public abstract class Usuario implements UsuarioBase {
         return metodosPagos;
     }
 
-
+    public String getEmail() {
+        return email;
+    }
 }

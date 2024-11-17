@@ -3,7 +3,7 @@ package Cuentas;
 import java.util.*;
 
 public class BaseDeDatos {
-    private HashMap<String, Usuario> baseDeDatosUsuarios = new HashMap<>();
+    private HashMap<String, Cliente> baseDeDatosUsuarios = new HashMap<>();
     private HashMap<String, Administrador> baseDeDatosAdministradores = new HashMap<>();
 
     public BaseDeDatos() {
@@ -11,7 +11,7 @@ public class BaseDeDatos {
         agregarAdministrador(administrador);
     }
 
-    public void agregarUsuario(Usuario usuario) {
+    public void agregarUsuario(Cliente usuario) {
         baseDeDatosUsuarios.put(usuario.getEmail(), usuario);
     }
 
@@ -27,7 +27,7 @@ public class BaseDeDatos {
         baseDeDatosAdministradores.remove(email);
     }
 
-    public Usuario obtenerUsuario(String email) {
+    public Cliente obtenerUsuario(String email) {
         return baseDeDatosUsuarios.get(email);
     }
 
