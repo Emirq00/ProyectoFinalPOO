@@ -73,4 +73,6 @@ public abstract class Usuario implements UsuarioBase {
     public List<MetodoPago> getMetodosPagos() {
         return metodosPagos;
     }
+
+
 }

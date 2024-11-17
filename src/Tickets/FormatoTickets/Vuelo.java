@@ -120,7 +120,7 @@ public abstract class Vuelo implements Serializable{
      * @return Retorna la cadena de cartacteres con toda la información del vuelo.
      */
     public String mostrarInformacionVuelo(){
-        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precioStandard+"\t      Origen: "+origen+"\t      Destino: "+destino);
+        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precio+"\t      Origen: "+origen+"\t      Destino: "+destino);
     }
 
     /**
@@ -128,24 +128,6 @@ public abstract class Vuelo implements Serializable{
      * @return Retorna toda la información del ticket con un formato en específico.
      */
     public abstract String mostrarInformacionCompra();
-
-    // Método para comprar un ticket y asociarlo al vuelo
-    public boolean comprarTicket(Ticket ticket) {
-        if (ticket instanceof StandardTicket && ticketsStandardDisponibles > 0) {
-            ticketsStandardDisponibles--;
-            ticketList.add(ticket);
-            return true;
-        } else if (ticket instanceof PremiumTicket && ticketsPremiumDisponibles > 0) {
-            ticketsPremiumDisponibles--;
-            ticketList.add(ticket);
-            return true;
-        } else if (ticket instanceof VipTicket && ticketsVIPDisponibles > 0) {
-            ticketsVIPDisponibles--;
-            ticketList.add(ticket);
-            return true;
-        }
-        return false;
-    }
 
     public int getID() {
         return ID;
