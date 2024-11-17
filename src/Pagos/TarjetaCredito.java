@@ -78,4 +78,12 @@ public class TarjetaCredito extends MetodoPago {
     public void setLimiteCredito(double limiteCredito) {
         this.limiteCredito = limiteCredito;
     }
+
+    public void setNumeroTarjeta(int numTarjeta) {
+        this.numeroTarjeta=numTarjeta;
+    }
+
+    public void setCvv(int cvv) {
+        this.cvv = cvv;
+    }
 }

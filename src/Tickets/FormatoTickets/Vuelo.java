@@ -137,5 +137,7 @@ public abstract class Vuelo implements Serializable{
         return IDList;
     }
 
-
+    public double getPrecio() {
+        return precio;
+    }
 }
