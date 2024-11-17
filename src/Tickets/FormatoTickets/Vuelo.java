@@ -13,7 +13,7 @@ import java.time.format.*;
  * vuelo de regreso (en caso de que se trate de un vuelo redondo) y la Fecha de compra.
  */
 public abstract class Vuelo implements Serializable{
-    protected int precio;
+    protected double precio;
     protected String origen;
     protected String destino;
     protected int tiempoDias=0;
@@ -28,7 +28,7 @@ public abstract class Vuelo implements Serializable{
     /**
      * @return Retorna el precio asignado al vuelo.
      */
-    public int getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
@@ -37,7 +37,7 @@ public abstract class Vuelo implements Serializable{
      * atributo del precio sin perder la estructura de bridge y sin utilizar un constructor.
      * @param precio Asigna un valor al precio de un vuelo.
      */
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precio=precio;
     }
 
@@ -125,7 +125,7 @@ public abstract class Vuelo implements Serializable{
     }
 
     public String mostrarInformacionVuelo(){
-        return "Tipo de vuelo: "+tipoDeVuelo+"\t"+"Precio: "+precio+"\t"+"Fecha: "+getFecha()+"\t"+"Origen: "+origen+"\t"+"Destino: "+destino+"\t";
+        return "Tipo de vuelo: "+tipoDeVuelo+"\t"+"Precio: "+precio+"\t\t"+"Fecha: "+getFecha()+"\t"+"       Origen: "+origen+"\t"+"      Destino: "+destino;
     }
 
     /**
@@ -157,5 +157,5 @@ public abstract class Vuelo implements Serializable{
      * Método general en el que se mostrará toda la información asociada a la compra de un ticket.
      * @return Retorna toda la información del ticket con un formato en específico.
      */
-    public abstract String mostrarInformacionCompra(String asiento);
+    public abstract String mostrarInformacionCompra(String asiento, String tipoTicket);
 }

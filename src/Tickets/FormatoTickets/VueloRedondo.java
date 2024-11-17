@@ -46,15 +46,24 @@ public class VueloRedondo extends Vuelo{
      *   - Tiempo en días entre los dos vuelos (ida y regreso).
      */
     @Override
-    public String mostrarInformacionCompra(String asiento) {
+    public String mostrarInformacionCompra(String asiento, String tipoTicket){
+        double multiplicador=1;
+        if(tipoTicket.equals("Standard")){
+            multiplicador=1;
+        } else if(tipoTicket.equals("Premium")){
+            multiplicador=1.4;
+        } else if(tipoTicket.equals("VIP")){
+            multiplicador=1.9;
+        }
         return "==========================================\n"+
         "   Resumen de su compra:\n"+
         "   Tipo de vuelo: "+tipoDeVuelo+"\n"+
+        "   Ticket: "+tipoTicket+"\n"+
         "   Origen: "+origen+"\n"+
         "   Destino: "+destino+"\n"+
         "   Asiento: "+ asiento +"\n"+
         "   Fecha de vuelo: "+getFecha()+"\n"+
-        "   Precio: "+precio+"\n"+
+        "   Precio: "+(precio*multiplicador)+"\n"+
         "   Días entre vuelos: "+tiempoDias+" días\n"+
         "==========================================\n";
     }

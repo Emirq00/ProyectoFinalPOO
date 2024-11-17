@@ -1,8 +1,6 @@
 package Tickets.FormatoTickets;
 
 import java.io.Serializable;
-
-import Cuentas.Cliente;
 import Cuentas.Usuario;
 
 /**
@@ -16,6 +14,7 @@ public abstract class Ticket implements Serializable{
     //Bridge
     protected Vuelo vuelo;
     protected String asiento;
+    protected double precioVueloTicket;
 
     public Usuario getPropietario() {
         return propietario;
@@ -51,11 +50,35 @@ public abstract class Ticket implements Serializable{
     }
 
     /**
+     * Método en el que se recupera el tipo de ticket que se va a comprar.
+     * @return Variable con el tipo de ticket que se va a comprar.
+     */
+    public String getTipoTicket() {
+        return tipoTicket;
+    }
+
+    /**
      * Método en el que se asigna el asiento al ticket que se va a comprar.
      * @param asiento Variable con el asiento que se va a asignar al ticket.
      */
     public void setAsiento(String asiento) {
         this.asiento = asiento;
+    }
+
+    /**
+     * Método en el que se asigna el precio al ticket que se va a comprar.
+     * @param precioVueloTicket Variable con el precio que se va a asignar al ticket.
+     */
+    public void setPrecioVueloTicket(double precioVueloTicket) {
+        this.precioVueloTicket = precioVueloTicket;
+    }
+
+    /**
+     * Método en el que se recupera el precio del ticket que se va a comprar.
+     * @return Variable con el precio del ticket que se va a comprar.
+     */
+    public double getPrecioVueloTicket() {
+        return precioVueloTicket;
     }
 
     /**

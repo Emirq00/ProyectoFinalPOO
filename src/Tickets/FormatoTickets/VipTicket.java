@@ -35,15 +35,15 @@ public class VipTicket extends Ticket{
         boolean QRTypeLine;     //Si true, entonces línea, caso contrario espacio
         Random random = new Random();
 		try{
-            archivoImprimirBoleto = new PrintWriter(new FileWriter("boletosImpresos.txt"));
+            archivoImprimirBoleto = new PrintWriter(new FileWriter("src/Tickets/TicketsComprados/boletosImpresos.txt"));
             archivoImprimirBoleto.println("***************************************************************");
             archivoImprimirBoleto.println("                       AEROVUELOS MÉXICO                   ");
-            archivoImprimirBoleto.println("                                                                               ");
-            archivoImprimirBoleto.println("      Boleto VIP - "+vuelo.getTipoDeVuelo()                                   );
+            archivoImprimirBoleto.println("                                                                                ");
+            archivoImprimirBoleto.println("      Boleto VIP - Vuelo "+vuelo.getTipoDeVuelo()                                  );
             archivoImprimirBoleto.println("      Pasajero: "+" ");
             archivoImprimirBoleto.println("      Fecha de vuelo: "+vuelo.getFecha()                                           );
             archivoImprimirBoleto.println("      Destino: "+vuelo.getOrigen()+"-"+vuelo.getDestino()                          );
-            archivoImprimirBoleto.println("      Asiento: "+"Método que nos devuelve el asiento");
+            archivoImprimirBoleto.println("      Asiento: "+ getAsiento()                                                     );
             archivoImprimirBoleto.println(" ");
             archivoImprimirBoleto.println("   === Puede ingresar antes que los pasajeros standard ===");
             archivoImprimirBoleto.println("    ## Puede ingresar antes que los pasajeros premium ##");
