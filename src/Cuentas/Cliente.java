@@ -15,6 +15,10 @@ public class Cliente extends Usuario {
         //this.comprasRealizadas = new ArrayList<>();
         this.metodosPagos = new ArrayList<>();
     }
+    public Cliente(String nombre, int edad, String email, String password){
+        super(nombre, edad, email, password);
+    }
+
 
     public List<MetodoPago> getMetodosPagos() {
         return metodosPagos;
