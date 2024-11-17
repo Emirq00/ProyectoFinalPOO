@@ -72,6 +72,26 @@ public class Cliente extends Usuario implements Observer{
         } while (opcion != 4);
     }
 
+    public void verMetodosPago(){
+        for(MetodoPago x:getMetodosPagos()){
+            System.out.println("Nombre del propietario: "+x.getInfo().getNombre());
+            System.out.println("Tipo: "+x.getTipo());
+            System.out.println("Detalles: "+x.getDetalles());
+            if(x.getInfo().getCvv()!=0){
+                System.out.println("Cvv: "+x.getInfo().getCvv());
+            }
+            if(x.getInfo().getNumeroTarjeta()!=0){
+                System.out.println("Numero de tarjeta: "+x.getInfo().getNumeroTarjeta());
+            }
+            if(x instanceof PagoEfectivo){
+                System.out.println("Cash: "+x.getInfo().getMontoEfectivo());
+            }
+            if(x instanceof Transferencia){
+                System.out.println("Fondos: "+x.getInfo().getFondos());
+            }
+        }
+    }
+
     private void agregarPagoEfectivo(Scanner cin) {
         PagoEfectivo cash = null;
         boolean existeMetodo = false;

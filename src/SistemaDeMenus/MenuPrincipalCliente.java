@@ -30,13 +30,15 @@ public class MenuPrincipalCliente extends Menu{
             System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
             System.out.println("1.- Mostrar vuelos disponibles");
             System.out.println("2.- Descargar boletos");
-            System.out.println("3.- Salir");
+            System.out.println("3.- Agregar metodos de pago");
+            System.out.println("4.- Ver metodos de pago y saldos");
+            System.out.println("5.- Salir");
             do{
                 System.out.print("Ingresa tu entrada: ");
                 incorrectEntry=false;
                 try {
                     decision = scanner.nextInt();
-                    if(decision<1 || decision>3){
+                    if(decision<1 || decision>5){
                         System.out.println("* Ingrese una entrada válida");
                     }
                 } catch (InputMismatchException e) {
@@ -44,15 +46,17 @@ public class MenuPrincipalCliente extends Menu{
                     scanner.nextLine();
                     incorrectEntry=true;
                 }
-            } while (incorrectEntry || decision<1 || decision>3);
+            } while (incorrectEntry || decision<1 || decision>5);
 
             switch (decision) {
                 case 1->consultaVuelos(); 
                 case 2->descargarBoletos();
-                case 3->scanner.close();
+                case 3->cliente.addMetodoPago(scanner);
+                case 4->cliente.verMetodosPago();
+                case 5->scanner.close();
                 default->System.out.println("* Ingrese una opción válida");
             }
-        } while (decision!=3);
+        } while (decision!=5);
 
         System.err.println("Saliendo...");
     }

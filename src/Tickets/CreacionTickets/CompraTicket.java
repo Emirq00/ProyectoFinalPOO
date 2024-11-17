@@ -109,7 +109,8 @@ public class CompraTicket{
             } while (entradaInvalida);
 
             System.out.println("\nResumen de compra:");
-            System.out.println(ticket.getVuelo().mostrarInformacionCompra(asientoSeleccionado));
+
+            System.out.println(ticket.getVuelo().mostrarInformacionCompra(asientoSeleccionado, ticket.getTipoTicket()));
             System.out.println("¿Qué deseas hacer?");
             System.out.println("1. Proseguir al pago");
             System.out.println("2. Regresar a la selección de tickets");
