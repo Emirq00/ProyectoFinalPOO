@@ -2,7 +2,6 @@ package SistemaDeMenus;
 
 import java.io.*;
 
-import Cuentas.Cliente;
 import Tickets.CreacionTickets.CompraTicket;
 import Tickets.FormatoTickets.*;
 import java.util.*;
@@ -13,20 +12,22 @@ import java.util.*;
  * los menús, para las implementaciones de los diferentes árboles se manda a llamar un método con un menú secundario.
  */
 public class MenuPrincipalCliente extends Menu{
-
+    private static VuelosSubject vuelosSubject = new VuelosSubject(); 
+    private static HashMap<Integer, String> vuelosDisponibles = new HashMap<>(); 
+    private static Scanner scanner = new Scanner(System.in); 
+    private static boolean incorrectEntry = false;
     /**
      * Método main en el que mostramos el menú general con las diferentes opciones. El menú se repite indefinidamente
      * permitiendo al usuario realizar cualquier operación del sistema de manera ininterrumpida, para finalizar el programa el
      * usuario deberá ingresar la opción señalada en el menú como "Salir", permitiendo así romper el bucle while.
      */
-    public static void main(Cliente cliente){
+    public static void menuUsuario(){
+        UsuarioObserver usuarioObserver = new UsuarioObserver("nombre de usuario"); 
+        vuelosSubject.addObserver(usuarioObserver);
         int decision=0;
         //Comenzamos siempre recuperando los vuelos disponibles del archivo de vuelos
-        CompraTicket.iniciarVuelosPrueba();
         consultarTodosLosVuelosArchivo();
-
         do{
-
             System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
             System.out.println("1.- Mostrar vuelos disponibles");
             System.out.println("2.- Descargar boletos");
@@ -48,12 +49,12 @@ public class MenuPrincipalCliente extends Menu{
 
             switch (decision) {
                 case 1->consultaVuelos(); 
-                case 2->descargarBoletos();
+                case 2->{} //Implementación de la impresion de los vuelos.
                 case 3->scanner.close();
                 default->System.out.println("* Ingrese una opción válida");
             }
         } while (decision!=3);
-
+        vuelosSubject.removeObserver(usuarioObserver);
         System.err.println("Saliendo...");
     }
 
@@ -62,7 +63,7 @@ public class MenuPrincipalCliente extends Menu{
      * de objetos en el que anteriormente el administrador habrá guardado los vuelos disponibles, junto con 5 vuelos de ejemplo.
      */
     private static void consultaVuelos(){
-        Cliente cliente=null;
+        
         boolean notRecognizedEntry=false;
         String decision;
         int numeroDeVuelosDisponibles=0;
@@ -72,7 +73,7 @@ public class MenuPrincipalCliente extends Menu{
             do{
                 System.out.print("Ingrese su entrada: ");
                 decision = scanner.nextLine();
-                notRecognizedEntry=filtroPalabras(decision, numeroDeVuelosDisponibles, cliente);
+                notRecognizedEntry=filtroPalabras(decision, numeroDeVuelosDisponibles);
                 
             } while (notRecognizedEntry);
 
@@ -114,7 +115,7 @@ public class MenuPrincipalCliente extends Menu{
      * @return Devuelve true en caso de que se haya ingresado una entrada inválida, devuelve false en caso de que se haya ingresado una entrada válida.
      * Esta entrada válida puede ser "HELP", "SALIR" o "RESERVAR" seguido del número del vuelo y romperán el ciclo while en el método consultaVuelos.
      */
-    private static boolean filtroPalabras(String decision, int numeroDeVuelosDisponibles, Cliente cliente){
+    private static boolean filtroPalabras(String decision, int numeroDeVuelosDisponibles){
         if(decision.equals("HELP")){
             mostrarInformacionHELPVuelos();
             return false;
@@ -134,7 +135,7 @@ public class MenuPrincipalCliente extends Menu{
                 int i;
                 for(i=1; i<=numeroDeVuelosDisponibles; i++){
                     if(decision.charAt(decision.length()-1)==Integer.toString(i).charAt(0)){
-                        CompraTicket.comprarTicket(vuelosDisponibles.get(i), cliente);
+                        CompraTicket.comprarTicket(vuelosDisponibles.get(i));
                         return false;
                     }
                 }
@@ -178,36 +179,4 @@ public class MenuPrincipalCliente extends Menu{
         System.out.println("   Se refiere al tiempo que transcurre entre el vuelo de ida y el vuelo de regreso, este tiempo puede variar y solamente ");
         System.out.println("   aplica para los vuelos redondos. La fecha entre ambos vuelos está unicamente disponible al momento de la compra.\n");
     }
-
-
-
-    /**
-     * Método con el que descargaremos los boletos de los vuelos que el usuario haya comprado, para ello se accederá a un archivo de texto
-     * en el que se almacenarán los boletos de los vuelos comprados, estos boletos se podrán consultar en cualquier momento y lugar.
-     */
-    private static void descargarBoletos(){
-        System.out.println("Descargando boletos...");
-        ObjectInputStream archivoObjetos = null;
-        try {
-            archivoObjetos = new ObjectInputStream(new FileInputStream("src/Tickets/TicketsComprados/Fernando"));
-            Ticket TicketImprimir=(Ticket)archivoObjetos.readObject();
-            TicketImprimir.imprimirTicket();
-            
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error al descargar los boletos");
-        } catch (IOException e) {
-            System.out.println("Error al descargar los boletos");
-        } finally {
-            try {
-                if (archivoObjetos != null) {
-                    archivoObjetos.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
-    }
 }
-
-
-
