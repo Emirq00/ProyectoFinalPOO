@@ -111,13 +111,6 @@ public abstract class Vuelo implements Serializable{
     public String getTipoDeVuelo() {
         return tipoDeVuelo;
     }
-    /**
-     * Método para asignar el tipo de vuelo que se está realizando, ya sea un vuelo simple o un vuelo redondo.
-     * @param tipoDeVuelo Tipo de vuelo que se está realizando
-     */
-    public void setTipoDeVuelo(String tipoDeVuelo) {
-        this.tipoDeVuelo = tipoDeVuelo;
-    }
 
     /**
      * Método general en el que se mostrará toda la información asociada a un vuelo.

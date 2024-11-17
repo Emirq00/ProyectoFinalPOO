@@ -1,11 +1,22 @@
 package Tickets.FormatoTickets;
 
+import java.time.LocalDateTime;
+
 /**
  * Clase en la que se asocia toda la información referente a los vuelos redondos, este tipo de vuelos se caracterizan por tener tanto un vuelo 
  * de ida al destino como un vuelo de regreso al origen separados por un periodo de tiempo definido por el administrador, el precio de estos
  * vuelos se recomienda ser mayor al de un vuelo simple debido a que se contemplan dos vuelos en lugar de uno solo.
  */
 public class VueloRedondo extends Vuelo{
+
+    public VueloRedondo(String origen, String destino, LocalDateTime fecha, int precio, int tiempoDias){
+        this.tipoDeVuelo="Redondo";
+        this.origen=origen;
+        this.destino=destino;
+        this.fecha=fecha;
+        this.precio=precio;
+        this.tiempoDias=tiempoDias;
+    }
 
     /**
      * Método en el que retorna toda la información de una compra de un ticket mediante un formato específico por lo que solamente se 
@@ -25,11 +36,12 @@ public class VueloRedondo extends Vuelo{
     public String mostrarInformacionCompra() {
         return "==========================================\n"+
         "   Resumen de su compra:\n"+
+        "   Tipo de vuelo: "+tipoDeVuelo+"\n"+
         "   Origen: "+origen+"\n"+
         "   Destino: "+destino+"\n"+
         "   Fecha de vuelo: "+fecha+"\n"+
         "   Precio: "+precio+"\n"+
-        "   Tiempo entre vuelos: "+tiempoDias+" días\n"+
+        "   Días entre vuelos: "+tiempoDias+" días\n"+
         "==========================================\n";
     }
 

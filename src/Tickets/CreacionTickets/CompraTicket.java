@@ -1,60 +1,118 @@
 package Tickets.CreacionTickets;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.time.LocalDateTime;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import Tickets.FormatoTickets.*;
 
 public class CompraTicket{
 
     public static Scanner scanner = new Scanner(System.in);
-    public static void main(String[] args) {
+
+    public static void iniciarVuelosPrueba(){
         ObjectOutputStream fileOut;
-        Vuelo vuelo = new VueloRedondo(), vuelo2 = new VueloRedondo(), vuelo3 = new VueloRedondo(), vuelo4 = new VueloRedondo(), vuelo5 = new VueloRedondo();
-        vuelo.setDestino("Japon");
-        vuelo.setFecha(LocalDateTime.now());
-        vuelo.setOrigen("Mexico");
-        vuelo.setPrecio(10000);
-        vuelo.setTipoDeVuelo("Redondo");
+        Vuelo vuelo1 = new VueloRedondo("Mexico", "Japon", LocalDateTime.of(2024, 12, 23, 19, 30), 70000, 7);
+        Vuelo vuelo2 = new VueloRedondo("Uruguay", "Argentina", LocalDateTime.of(2025, 2, 4, 13, 0), 56000, 10);
+        Vuelo vuelo3 = new VueloSimple("México", "España", LocalDateTime.of(2024, 12, 2, 15, 30), 45000);
+        Vuelo vuelo4 = new VueloSimple("Canada", "Estados Unidos", LocalDateTime.of(2024, 12, 29, 21, 45), 10000); 
+        Vuelo vuelo5 = new VueloSimple("India", "China", LocalDateTime.of(2024, 12, 30, 20, 0), 24000);
         try {
             fileOut = new ObjectOutputStream(new FileOutputStream("Vuelos"));
-            fileOut.writeObject(vuelo);
-            vuelo2.setDestino("Uruguay");
-            vuelo2.setFecha(LocalDateTime.now());
-            vuelo2.setOrigen("Argentina");
-            vuelo2.setPrecio(56000);
-            vuelo2.setTipoDeVuelo("Redondo");
-            
+            fileOut.writeObject(vuelo1);
             fileOut.writeObject(vuelo2);
-            vuelo3.setDestino("Argelia");
-            vuelo3.setFecha(LocalDateTime.now());
-            vuelo3.setOrigen("Mexico");
-            vuelo3.setPrecio(23000);
-            vuelo3.setTipoDeVuelo("Redondo");
-
             fileOut.writeObject(vuelo3);
-            vuelo4.setDestino("Estados Unidos");
-            vuelo4.setFecha(LocalDateTime.now());
-            vuelo4.setOrigen("Canada");
-            vuelo4.setPrecio(17000);
-            vuelo4.setTipoDeVuelo("Redondo");
-
             fileOut.writeObject(vuelo4);
-            vuelo5.setDestino("China");
-            vuelo5.setFecha(LocalDateTime.now());
-            vuelo5.setOrigen("India");
-            vuelo5.setPrecio(21000);
-            vuelo5.setTipoDeVuelo("Redondo");
-
-            fileOut.writeObject(vuelo);
-
+            fileOut.writeObject(vuelo5);
             fileOut.close();
         } 
         catch (IOException e){
             System.out.println("Error: " + e.getMessage());
         }
-        SistemaDeMenus.MenuPrincipalCliente.menuPrincipal();
+    }
+
+    /**
+     * Método en el que vamos a generar todo el proceso de compra de un ticket, en el que se le pedirá al usuario que seleccione un vuelo
+     * y en base al tipo de vuelo se reasignarán algunos atributos como el precio y la cantidad de asientos disponibles.
+     *
+     * @param vueloSeleccionado Vuelo seleccionado anteriormente por el usuario que se asignará al momento de la compra del ticket.
+     */
+    public static void comprarTicket(Vuelo vueloSeleccionado){
+        boolean entradaInvalida = false, indesicion = false;
+        Ticket ticket = null;
+        do {
+            System.out.println("\n¿Qué tipo de ticket desea comprar?");
+            System.out.println("1. Standard");
+            System.out.println("2. Premium");
+            System.out.println("3. VIP");
+            System.out.println("4. Salir");
+            do {
+                entradaInvalida = false;
+                try {
+                    System.out.print("Ingrese su entrada: ");
+                    int opcion = scanner.nextInt();
+                    switch(opcion){
+                        case 1-> ticket = new StandardTicket(vueloSeleccionado);
+                        case 2-> ticket = new PremiumTicket(vueloSeleccionado);
+                        case 3-> ticket = new VipTicket(vueloSeleccionado);
+                        case 4-> {
+                            System.out.println("Regresado...");
+                            return;
+                        }
+                        default->{
+                            System.out.println(" *Opción no válida");
+                            entradaInvalida = true;
+                        }
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println(" *Ingrese una entrada numérica");
+                    entradaInvalida = true;
+                }
+            } while (entradaInvalida);
+
+            System.out.println("\nResumen de compra:");
+            ticket.mostrarInformacion();
+            System.out.println("¿Qué deseas hacer?");
+            System.out.println("1. Proseguir al pago");
+            System.out.println("2. Regresar a la selección de tickets");
+            System.out.println("3. Regresar al menú principal");
+            do {
+                entradaInvalida = false;
+                System.out.print("Ingrese su entrada: ");
+                int opcion = scanner.nextInt();
+                switch(opcion){
+                    case 1-> indesicion = false;
+                    case 2-> indesicion = true;
+                    case 3-> {
+                        System.out.println("Regresado...");
+                        return;
+                    }
+                    default->{
+                        System.out.println(" *Opción no válida");
+                        entradaInvalida = true;
+                    }
+                }
+            } while (entradaInvalida);
+            
+        } while (indesicion);
+
+        //Toda la chingadera para pagar
+
+        //Ingresamos el nuevo ticket asociado a la cuenta
+        ObjectOutputStream fileOut=null;
+        try {
+            fileOut = new ObjectOutputStream(new FileOutputStream("src/Tickets/TicketsComprados/Fernando"));//Al final seria el nomnbre del usuario
+            fileOut.writeObject(ticket);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        
+        try {
+            fileOut.close();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.println("¡Compra realizada con éxito!");
     }
 }

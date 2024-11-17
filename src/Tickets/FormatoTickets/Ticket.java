@@ -1,14 +1,26 @@
 package Tickets.FormatoTickets;
 
+import Cuentas.Cliente;
+import Cuentas.Usuario;
+
 /**
  *  Clase abstracta en la que definimos la estructura principal de los diferentes tickets de compra que podrán ser comprados al momento 
  *  de reservar los vuelos. La clase permite generar tickets standard, premium y vip.
  */
 public abstract class Ticket{
 
+    private Usuario propietario;
+    protected String tipoTicket;
     //Bridge
-    public String tipoTicket;
-    public Vuelo vuelo;
+    protected Vuelo vuelo;
+
+    public Usuario getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Usuario propietario) {
+        this.propietario = propietario;
+    }
 
     /**
      * Constructor en el que vamos a generar el puente entre los tickets y los diferentes vuelos que podemos generar en el programa, este 
@@ -26,6 +38,14 @@ public abstract class Ticket{
      */
     public void mostrarInformacion(){
         System.out.println(vuelo.mostrarInformacionCompra());
+    }
+
+    /**
+     * Método en el que se recupera el vuelo asociado al ticket que se va comprar.
+     * @return Variable con toda la información del vuelo asociado al ticket.
+     */
+    public Vuelo getVuelo() {
+        return vuelo;
     }
 
     /**

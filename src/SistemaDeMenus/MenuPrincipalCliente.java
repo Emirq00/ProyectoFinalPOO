@@ -1,6 +1,8 @@
 package SistemaDeMenus;
 
 import java.io.*;
+
+import Tickets.CreacionTickets.CompraTicket;
 import Tickets.FormatoTickets.*;
 import java.util.*;
 
@@ -16,9 +18,10 @@ public class MenuPrincipalCliente extends Menu{
      * permitiendo al usuario realizar cualquier operación del sistema de manera ininterrumpida, para finalizar el programa el
      * usuario deberá ingresar la opción señalada en el menú como "Salir", permitiendo así romper el bucle while.
      */
-    public static void menuPrincipal() {
+    public static void main(String [] args){
         int decision=0;
-
+        //Comenzamos siempre recuperando los vuelos disponibles del archivo de vuelos
+        consultarTodosLosVuelosArchivo();
         do{
             System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
             System.out.println("1.- Mostrar vuelos disponibles");
@@ -46,6 +49,7 @@ public class MenuPrincipalCliente extends Menu{
                 default->System.out.println("* Ingrese una opción válida");
             }
         } while (decision!=3);
+
         System.err.println("Saliendo...");
     }
 
@@ -79,40 +83,19 @@ public class MenuPrincipalCliente extends Menu{
      * @return Retorna el número de vuelos almacenados dentro del archivo de objetos.
      */
     private static int vuelosDisponibles(){
-        ObjectInputStream archivoObjetos=null;
-        Vuelo vuelo;
         int numeroDeVuelosDisponibles=0;
 
         System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("   Vuelos disponibles: \n");
 
-        try{
-            archivoObjetos = new ObjectInputStream(new FileInputStream("Vuelos"));
-            int i=1;
-            while(true){
-                vuelo = (Vuelo) archivoObjetos.readObject();
-                numeroDeVuelosDisponibles++;
-                System.out.println((i++)+".- "+vuelo.mostrarInformacionVuelo());
-            }
+        for(int i: vuelosDisponibles.keySet()){
+            System.out.println(i+".- "+vuelosDisponibles.get(i).mostrarInformacionVuelo());
+            numeroDeVuelosDisponibles++;
         }
-        catch (EOFException e){
-            System.out.println("\nPara mayor información sobre los vuelos, por favor ingrese la palabra ''HELP''");
-            System.out.println("Si desea reservar uno de los vuelos disponible ingrese la palabra ''RESERVAR'' seguido del número del vuelo (ejemplo: RESERVAR 4)");
-            System.out.println("Si por el contrario desea regresar a menú principal, ingrese la palabra ''SALIR''");
-            System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------");
-        }
-        catch (IOException e){
-            System.out.println("IO Error: " + e.getMessage());
-        }
-        catch (ClassNotFoundException e) {
-            System.out.println("ClassNotFound " + e.getMessage());
-        }
-
-        try {
-            archivoObjetos.close();
-        } catch (IOException e) {
-            System.out.println("Ha ocurrido un error al tratar de cerrar el archivo");
-        }
+        System.out.println("\nPara mayor información sobre los vuelos, por favor ingrese la palabra ''HELP''");
+        System.out.println("Si desea reservar uno de los vuelos disponible ingrese la palabra ''RESERVAR'' seguido del número del vuelo (ejemplo: RESERVAR 4)");
+        System.out.println("Si por el contrario desea regresar a menú principal, ingrese la palabra ''SALIR''");
+        System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------");
 
         return numeroDeVuelosDisponibles;
     }
@@ -129,7 +112,7 @@ public class MenuPrincipalCliente extends Menu{
      */
     private static boolean filtroPalabras(String decision, int numeroDeVuelosDisponibles){
         if(decision.equals("HELP")){
-            mostrarInformacionGeneralVuelos();
+            mostrarInformacionHELPVuelos();
             return false;
 
         } else if(decision.equals("SALIR")){
@@ -141,12 +124,13 @@ public class MenuPrincipalCliente extends Menu{
             return true;
 
         } else if (decision.length()>=10){
-        
+            
+            //Validamos que la palabra ingresada sea "RESERVAR" seguido de un número
             if(decision.substring(0, 9).equals("RESERVAR ")){
                 int i;
                 for(i=1; i<=numeroDeVuelosDisponibles; i++){
                     if(decision.charAt(decision.length()-1)==Integer.toString(i).charAt(0)){
-                        System.out.println("Reservado"+i);
+                        CompraTicket.comprarTicket(vuelosDisponibles.get(i));
                         return false;
                     }
                 }
@@ -166,9 +150,9 @@ public class MenuPrincipalCliente extends Menu{
      * desarrollan cada uno de los conceptos junto con una pequeña definición, este método únicamente se manda a llamar cuando
      * el usuario ingresa la palabra HELP dentro del menú de consulta de vuelos.
      */
-    private static void mostrarInformacionGeneralVuelos(){
-        System.out.println("   Información general de los vuelos: \n");
-        System.out.println("   -- Tipo de vuelo --");
+    private static void mostrarInformacionHELPVuelos(){
+        System.out.println("   Información general de los vuelos:");
+        System.out.println("   \n  -- Tipo de vuelo --");
         System.out.println("   Se refiere a los diferentes tipos de vuelos que se tienen disponibles, estos pueden ser de tipo sencillo o redondo.");
         System.out.println("   * Los vuelos sencillos son aquellos que solo tienen un destino y un origen.");
         System.out.println("   * Los vuelos redondos son aquellos que tienen un destino y un origen, pero además tienen un segundo vuelo de regreso.");

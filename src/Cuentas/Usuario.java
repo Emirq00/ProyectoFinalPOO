@@ -1,6 +1,5 @@
 package Cuentas;
 
-import Eventos.Evento;
 import Pagos.MetodoPago;
 
 import java.util.List;
@@ -12,7 +11,6 @@ public abstract class Usuario implements UsuarioBase {
     private String password;
     private String email;
     private List<String> historialBusqueda;
-    private Set<Evento> favoritos;
     private List<MetodoPago> metodosPagos;
 
     public Usuario(){};
@@ -67,16 +65,12 @@ public abstract class Usuario implements UsuarioBase {
         //implementacion
     }
 
-    public void agregarFavorito(Evento evento){
-        //implementacion
-    }
-
-    public Evento buscarEvento(String busqueda){
-        return null;
-        //implementacion
-    }
 
     public void verHistorial(){
         //implementacion
+    }
+
+    public List<MetodoPago> getMetodosPagos() {
+        return metodosPagos;
     }
 }
