@@ -15,10 +15,11 @@ public abstract class Usuario implements UsuarioBase {
 
     public Usuario(){};
 
-    public Usuario(String nombre, int edad, String password){
+    public Usuario(String nombre, int edad, String email, String password){
         this.nombre=nombre;
         this.edad=edad;
         this.password=password;
+        this.email=email;
     }
 
     public int getEdad() {
