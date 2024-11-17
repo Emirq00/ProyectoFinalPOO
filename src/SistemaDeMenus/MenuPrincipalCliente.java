@@ -22,15 +22,14 @@ public class MenuPrincipalCliente extends Menu{
         do{
             System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
             System.out.println("1.- Mostrar vuelos disponibles");
-            System.out.println("2.- Comprar vuelo");
-            System.out.println("3.- Descargar boletos");
-            System.out.println("4.- Salir");
+            System.out.println("2.- Descargar boletos");
+            System.out.println("3.- Salir");
             do{
                 System.out.print("Ingresa tu entrada: ");
                 incorrectEntry=false;
                 try {
                     decision = scanner.nextInt();
-                    if(decision<1 || decision>4){
+                    if(decision<1 || decision>3){
                         System.out.println("* Ingrese una entrada válida");
                     }
                 } catch (InputMismatchException e) {
@@ -38,16 +37,15 @@ public class MenuPrincipalCliente extends Menu{
                     scanner.nextLine();
                     incorrectEntry=true;
                 }
-            } while (incorrectEntry || decision<1 || decision>4);
+            } while (incorrectEntry || decision<1 || decision>3);
 
             switch (decision) {
                 case 1->consultaVuelos(); 
-                case 2->{} //Implementación de la compra de vuelos
-                case 3->{} //Implementación de la descarga de boletos
-                case 4->scanner.close();
+                case 2->{} //Implementación de la impresion de los vuelos.
+                case 3->scanner.close();
                 default->System.out.println("* Ingrese una opción válida");
             }
-        } while (decision!=4);
+        } while (decision!=3);
         System.err.println("Saliendo...");
     }
 
@@ -99,7 +97,7 @@ public class MenuPrincipalCliente extends Menu{
         }
         catch (EOFException e){
             System.out.println("\nPara mayor información sobre los vuelos, por favor ingrese la palabra ''HELP''");
-            System.out.println("Si desea reservar uno de los vielos disponible ingrese la palabra ''RESERVAR'' seguido del número del vuelo (ejemplo: RESERVAR4)");
+            System.out.println("Si desea reservar uno de los vuelos disponible ingrese la palabra ''RESERVAR'' seguido del número del vuelo (ejemplo: RESERVAR 4)");
             System.out.println("Si por el contrario desea regresar a menú principal, ingrese la palabra ''SALIR''");
             System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
@@ -138,13 +136,13 @@ public class MenuPrincipalCliente extends Menu{
             System.out.println("Regresando al menú principal...");
             return false;
 
-        } else if(decision.equals("RESERVAR")){
+        } else if(decision.equals("RESERVAR") || decision.equals("RESERVAR ")){
             System.out.println("* No se ha ingresado un número de vuelo, favor de especificarlo");
             return true;
 
-        } else if (decision.length()>=9){
+        } else if (decision.length()>=10){
         
-            if(decision.substring(0, 8).equals("RESERVAR")){
+            if(decision.substring(0, 9).equals("RESERVAR ")){
                 int i;
                 for(i=1; i<=numeroDeVuelosDisponibles; i++){
                     if(decision.charAt(decision.length()-1)==Integer.toString(i).charAt(0)){
@@ -163,7 +161,11 @@ public class MenuPrincipalCliente extends Menu{
         return true;
     }
 
-
+    /**
+     * Método con el que mostraremos toda la información particular de cada uno de los conceptos que se manejan en el menú, en este se 
+     * desarrollan cada uno de los conceptos junto con una pequeña definición, este método únicamente se manda a llamar cuando
+     * el usuario ingresa la palabra HELP dentro del menú de consulta de vuelos.
+     */
     private static void mostrarInformacionGeneralVuelos(){
         System.out.println("   Información general de los vuelos: \n");
         System.out.println("   -- Tipo de vuelo --");
@@ -171,7 +173,7 @@ public class MenuPrincipalCliente extends Menu{
         System.out.println("   * Los vuelos sencillos son aquellos que solo tienen un destino y un origen.");
         System.out.println("   * Los vuelos redondos son aquellos que tienen un destino y un origen, pero además tienen un segundo vuelo de regreso.");
         System.out.println("     (NOTA: El tiempo entre el vuelo de ida y el vuelo de regreso está sujeto al vuelo seleccionado y puede variar).");
-        System.out.println("   \n-- Fecha --");
+        System.out.println("   \n  -- Fecha --");
         System.out.println("   Se refiere a la fecha especificada en la que el vuelo partira del origen hacia el destino, es recomendable");
         System.out.println("   que el usuario tome en cuenta la fecha de salida para evitar confusiones.");
         System.out.println("   \n  -- Precio --");

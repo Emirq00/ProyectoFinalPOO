@@ -20,6 +20,7 @@ public class VipTicket extends Ticket{
      */
     public VipTicket(Vuelo vuelo){
         super(vuelo);
+        this.tipoTicket="VIP";
     }
 
     /**

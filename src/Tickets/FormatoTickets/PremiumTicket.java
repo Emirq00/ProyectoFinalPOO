@@ -20,6 +20,7 @@ public class PremiumTicket extends Ticket{
      */
     public PremiumTicket(Vuelo vuelo){
         super(vuelo);
+        this.tipoTicket="Premium";
     }
 
     /**

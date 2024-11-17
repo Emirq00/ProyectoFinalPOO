@@ -7,6 +7,7 @@ package Tickets.FormatoTickets;
 public abstract class Ticket{
 
     //Bridge
+    public String tipoTicket;
     public Vuelo vuelo;
 
     /**
