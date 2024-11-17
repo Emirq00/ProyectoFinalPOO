@@ -21,8 +21,31 @@ public class MenuPrincipalCliente extends Menu{
     public static void main(String [] args){
         int decision=0;
         //Comenzamos siempre recuperando los vuelos disponibles del archivo de vuelos
+        CompraTicket.iniciarVuelosPrueba();
         consultarTodosLosVuelosArchivo();
+
+        ObjectInputStream archivoObjetos = null;
+        try {
+            archivoObjetos = new ObjectInputStream(new FileInputStream("src/Tickets/TicketsComprados/Fernando"));
+            Ticket ticket = (Ticket) archivoObjetos.readObject();
+            System.out.println(ticket.getVuelo().mostrarInformacionVuelo());
+            
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (archivoObjetos != null) {
+                    archivoObjetos.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
         do{
+
             System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
             System.out.println("1.- Mostrar vuelos disponibles");
             System.out.println("2.- Descargar boletos");

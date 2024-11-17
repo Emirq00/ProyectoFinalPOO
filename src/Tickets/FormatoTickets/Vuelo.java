@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Clase en la que se imprime la plantilla general de los diferentes tipos de vuelos que se tendrán disponibles dentro del programa, se 
@@ -23,8 +20,10 @@ public abstract class Vuelo implements Serializable{
     protected double precio;
     protected LocalDateTime fecha;
     protected String tipoDeVuelo;
-    protected int ticketsDisponibles;
-    protected int [][] asientosDisponibles=new int[9][20];
+    public int ticketsStandardDisponibles=136;
+    public int ticketsPremiumDisponibles=27;
+    public int ticketsVIPDisponibles=27;
+    protected HashMap<String, Integer> asientosDisponibles=new HashMap<>();
     protected static final HashSet<Integer> IDList=new HashSet<>();
     protected int ID;
     protected static Random random=new Random();
@@ -120,32 +119,38 @@ public abstract class Vuelo implements Serializable{
      * @return Retorna la cadena de cartacteres con toda la información del vuelo.
      */
     public String mostrarInformacionVuelo(){
-        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precioStandard+"\t      Origen: "+origen+"\t      Destino: "+destino);
+        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precio+"\t      Origen: "+origen+"\t      Destino: "+destino);
+    }
+
+    /**
+     * Método que devuelve el numero de tickets asociados a un vuelo standar
+     * @return Retorna el número de tickets standar disponibles
+     */
+    public int getTicketsStandardDisponibles() {
+        return ticketsStandardDisponibles;
+    }
+
+    /**
+     * Método que devuelve el numero de tickets asociados a un vuelo premium
+     * @return Retorna el número de tickets premium disponibles
+     */
+    public int getTicketsPremiumDisponibles() {
+        return ticketsPremiumDisponibles;
+    }
+
+    /**
+     * Método que devuelve el numero de tickets asociados a un vuelo VIP
+     * @return Retorna el número de tickets VIP disponibles
+     */
+    public int getTicketsVIPDisponibles() {
+        return ticketsVIPDisponibles;
     }
 
     /**
      * Método general en el que se mostrará toda la información asociada a la compra de un ticket.
      * @return Retorna toda la información del ticket con un formato en específico.
      */
-    public abstract String mostrarInformacionCompra();
-
-    // Método para comprar un ticket y asociarlo al vuelo
-    public boolean comprarTicket(Ticket ticket) {
-        if (ticket instanceof StandardTicket && ticketsStandardDisponibles > 0) {
-            ticketsStandardDisponibles--;
-            ticketList.add(ticket);
-            return true;
-        } else if (ticket instanceof PremiumTicket && ticketsPremiumDisponibles > 0) {
-            ticketsPremiumDisponibles--;
-            ticketList.add(ticket);
-            return true;
-        } else if (ticket instanceof VipTicket && ticketsVIPDisponibles > 0) {
-            ticketsVIPDisponibles--;
-            ticketList.add(ticket);
-            return true;
-        }
-        return false;
-    }
+    public abstract String mostrarInformacionCompra(String asiento);
 
     public int getID() {
         return ID;
@@ -154,6 +159,37 @@ public abstract class Vuelo implements Serializable{
     public static HashSet<Integer> getIDList() {
         return IDList;
     }
+
+    /**
+     * Método en el que retornamos los asientos asociasdos a un vuelo.
+     * @return Retorna un HashMap con los asientos disponibles en el vuelo.
+     */
+    public HashMap<String, Integer> getAsientosDisponibles() {
+        return asientosDisponibles;
+    }
+
+    public void mostrarAsientos(){
+        System.out.println("\n Asientos disponibles:");
+        System.out.println("          VIP                  Premium                             Standard");
+        String [] letras={"A","B","C","D","E","F","G","H","I","J"};
+        for(int i=0;i<9;i++){
+            for(int j=0;j<20;j++){
+                if(j<5){
+                    System.out.print(letras[i]+j+"  ");
+                } else if (j<10){
+                    System.out.print(letras[i]+j+"  ");
+                } else{
+                    System.out.print(letras[i]+j+"  ");
+                }
+
+                if(j==4 || j==9){
+                    System.out.print(" | ");
+                }
+            }
+            System.out.println();
+        }
+    }
+    
 
 
 }
