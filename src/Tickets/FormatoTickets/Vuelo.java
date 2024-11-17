@@ -23,6 +23,7 @@ public abstract class Vuelo implements Serializable{
     public int ticketsPremiumDisponibles=27;
     public int ticketsVipDisponibles=27;
     protected HashMap<String, Integer> asientosDisponibles = new HashMap<>();
+    private List<Observer> observers = new ArrayList<>();
 
     /**
      * @return Retorna el precio asignado al vuelo.

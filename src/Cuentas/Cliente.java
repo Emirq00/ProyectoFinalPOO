@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Cliente extends Usuario {
+public class Cliente extends Usuario implements Observer{
     //private List<Compra> comprasRealizadas;
     private List<MetodoPago> metodosPagos;
 
@@ -17,6 +17,7 @@ public class Cliente extends Usuario {
     }
     public Cliente(String nombre, int edad, String email, String password){
         super(nombre, edad, email, password);
+        this.metodosPagos = new ArrayList<>();
     }
 
 
@@ -149,6 +150,14 @@ public class Cliente extends Usuario {
             tarjeta = new TarjetaCredito(info);
             getMetodosPagos().add(tarjeta);
             System.out.println("Tarjeta de crédito agregada exitosamente.");
+        }
+    }
+    @Override
+    public void actualizar(boolean asientoDisponible) {
+        if (asientoDisponible) {
+            System.out.println("Hola, " + getNombre() + ", un asiento se ha liberado.");
+        } else {
+            System.out.println("Hola, " + getNombre() + ", el asiento ya no está disponible.");
         }
     }
 }

@@ -60,6 +60,7 @@ public class Ejecutable {
             } else {
                 ver = true;
                 System.out.println("Inicio de sesión exitoso como Usuario");
+
                 Cliente usuario = baseDeDatos.obtenerUsuario(email);
                 MenuPrincipalCliente.main(usuario);
             }
