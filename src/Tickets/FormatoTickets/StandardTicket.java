@@ -31,15 +31,15 @@ public class StandardTicket extends Ticket{
         boolean QRTypeLine;     //Si true, entonces línea, caso contrario espacio
         Random random = new Random();
 		try{
-            archivoImprimirBoleto = new PrintWriter(new FileWriter("boletosImpresos.txt"));
+            archivoImprimirBoleto = new PrintWriter(new FileWriter("src/Tickets/TicketsComprados/boletosImpresos.txt"));
             archivoImprimirBoleto.println("***************************************************************");
             archivoImprimirBoleto.println("                       AEROVUELOS MÉXICO                   ");
             archivoImprimirBoleto.println("                                                                               ");
-            archivoImprimirBoleto.println("      Boleto standar - "+vuelo.getTipoDeVuelo()                                   );
+            archivoImprimirBoleto.println("      Boleto standar - Vuelo "+vuelo.getTipoDeVuelo()                         );
             archivoImprimirBoleto.println("      Pasajero: "+" ");
             archivoImprimirBoleto.println("      Fecha de vuelo: "+vuelo.getFecha()                                          );
             archivoImprimirBoleto.println("      Destino: "+vuelo.getOrigen()+"-"+vuelo.getDestino()                         );
-            archivoImprimirBoleto.println("      Asiento: "+ asiento                                                         );
+            archivoImprimirBoleto.println("      Asiento: "+ getAsiento()                                                    );
             archivoImprimirBoleto.println(" ");
             archivoImprimirBoleto.println(" ");
             archivoImprimirBoleto.print("           ");
