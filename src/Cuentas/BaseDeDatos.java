@@ -1,15 +1,19 @@
 package Cuentas;
 
 import java.io.*;
-import java.util.*;
+import java.util.HashMap;
 
-public class BaseDeDatos {
+public class BaseDeDatos implements Serializable {
+    private static final long serialVersionUID = 1L;
     private HashMap<String, Cliente> baseDeDatosUsuarios = new HashMap<>();
     private HashMap<String, Administrador> baseDeDatosAdministradores = new HashMap<>();
 
     public BaseDeDatos() {
-        Administrador administrador = new Administrador("Admin", 30, "admin123", "admin@aeroviajes.com");
-        agregarAdministrador(administrador);
+        cargarDeArchivo();
+        if (baseDeDatosAdministradores.isEmpty()) {
+            Administrador administrador = new Administrador("Admin", 30, "admin123", "admin@aeroviajes.com");
+            agregarAdministrador(administrador);
+        }
     }
 
     public void agregarUsuario(Cliente usuario) {
@@ -69,12 +73,21 @@ public class BaseDeDatos {
         }
     }
 
-    public void cargarDeArchivo() {
+    private void cargarDeArchivo() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("baseDeDatos"))) {
             baseDeDatosUsuarios = (HashMap<String, Cliente>) ois.readObject();
             baseDeDatosAdministradores = (HashMap<String, Administrador>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            baseDeDatosUsuarios = new HashMap<>();
+            baseDeDatosAdministradores = new HashMap<>();
         }
+    }
+
+    public HashMap<String, Cliente> getBaseDeDatosUsuarios() {
+        return baseDeDatosUsuarios;
+    }
+
+    public HashMap<String, Administrador> getBaseDeDatosAdministradores() {
+        return baseDeDatosAdministradores;
     }
 }
