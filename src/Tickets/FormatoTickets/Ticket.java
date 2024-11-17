@@ -10,7 +10,7 @@ import Cuentas.Usuario;
 public abstract class Ticket{
 
 
-    public Usuario propietario;
+    public Usuario propietario=null;
     //Bridge
     public Vuelo vuelo;
 

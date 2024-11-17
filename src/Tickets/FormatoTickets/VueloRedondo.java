@@ -7,6 +7,10 @@ package Tickets.FormatoTickets;
  */
 public class VueloRedondo extends Vuelo{
 
+    public VueloRedondo(String destino, String origen, double precioStandard, double precioPremium, double precioVIP, int ticketsStandard, int ticketsPremium, int ticketsVIP) {
+        super(destino, origen, precioStandard, precioPremium, precioVIP, ticketsStandard, ticketsPremium, ticketsVIP);
+    }
+
     /**
      * Método en el que retorna toda la información de una compra de un ticket mediante un formato específico por lo que solamente se 
      * recomienda utilizarse cuando la compra del ticket esté por finalizar. La información retornada incluye:
@@ -28,7 +32,7 @@ public class VueloRedondo extends Vuelo{
         "   Origen: "+origen+"\n"+
         "   Destino: "+destino+"\n"+
         "   Fecha de vuelo: "+fecha+"\n"+
-        "   Precio: "+precio+"\n"+
+        "   Precio: "+precioStandard+"\n"+
         "   Tiempo entre vuelos: "+tiempoDias+" días\n"+
         "==========================================\n";
     }

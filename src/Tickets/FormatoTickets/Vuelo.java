@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase en la que se imprime la plantilla general de los diferentes tipos de vuelos que se tendrán disponibles dentro del programa, se 
@@ -13,19 +15,42 @@ import java.time.format.*;
  * vuelo de regreso (en caso de que se trate de un vuelo redondo) y la Fecha de compra.
  */
 public abstract class Vuelo implements Serializable{
-    protected int precio;
+    protected double precioStandard;
+    protected double precioPremium;
+    protected double precioVIP;
     protected String origen;
     protected String destino;
     protected int tiempoDias=0;
     protected LocalDateTime fecha;
     protected String tipoDeVuelo;
+    protected int ticketsStandardDisponibles;
+    protected int ticketsPremiumDisponibles;
+    protected int ticketsVIPDisponibles;
+    protected List<Ticket> ticketList;
 
+
+    public Vuelo(String destino, String origen, double precioStandard, double precioPremium, double precioVIP, int ticketsStandard, int ticketsPremium, int ticketsVIP){
+        this.destino = destino;
+        this.origen=origen;
+        this.precioStandard = precioStandard;
+        this.precioPremium = precioPremium;
+        this.precioVIP = precioVIP;
+        this.ticketsStandardDisponibles = ticketsStandard;
+        this.ticketsPremiumDisponibles = ticketsPremium;
+        this.ticketsVIPDisponibles = ticketsVIP;
+        this.ticketList=new ArrayList<>();
+    }
     /**
      * @return Retorna el precio asignado al vuelo.
      */
-    public int getPrecio() {
-        return precio;
+    public double getPrecioStandard() {
+        return precioStandard;
     }
+
+    public double getPrecioPremium() {return precioPremium;}
+
+    public double getPrecioVIP() {return precioVIP;}
+
 
     /**
      * Método para asignar el precio de un vuelo al objeto de tipo vuelo, este método tiene como fin el asignar los valores del 
@@ -33,8 +58,14 @@ public abstract class Vuelo implements Serializable{
      * @param precio Asigna un valor al precio de un vuelo.
      */
     public void setPrecio(int precio) {
-        this.precio=precio;
+        this.precioStandard=precio;
     }
+
+    public void setPrecioPremium(double precioPremium) {this.precioPremium = precioPremium;}
+
+    public void setPrecioStandard(double precioStandard) {this.precioStandard = precioStandard;}
+
+    public void setPrecioVIP(double precioVIP) {this.precioVIP = precioVIP;}
 
     /**
      * @return Retorna el lugar de origen del vuelo.
@@ -124,7 +155,7 @@ public abstract class Vuelo implements Serializable{
      * @return Retorna la cadena de cartacteres con toda la información del vuelo.
      */
     public String mostrarInformacionVuelo(){
-        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precio+"\t      Origen: "+origen+"\t      Destino: "+destino);
+        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precioStandard+"\t      Origen: "+origen+"\t      Destino: "+destino);
     }
 
     /**
@@ -132,4 +163,22 @@ public abstract class Vuelo implements Serializable{
      * @return Retorna toda la información del ticket con un formato en específico.
      */
     public abstract String mostrarInformacionCompra();
+
+    // Método para comprar un ticket y asociarlo al vuelo
+    public boolean comprarTicket(Ticket ticket) {
+        if (ticket instanceof StandardTicket && ticketsStandardDisponibles > 0) {
+            ticketsStandardDisponibles--;
+            ticketList.add(ticket);
+            return true;
+        } else if (ticket instanceof PremiumTicket && ticketsPremiumDisponibles > 0) {
+            ticketsPremiumDisponibles--;
+            ticketList.add(ticket);
+            return true;
+        } else if (ticket instanceof VipTicket && ticketsVIPDisponibles > 0) {
+            ticketsVIPDisponibles--;
+            ticketList.add(ticket);
+            return true;
+        }
+        return false;
+    }
 }
