@@ -63,7 +63,7 @@ public class Ejecutable {
                 if (rol.equals("Administrador")) {
                     ver = true;
                     System.out.println("Inicio de sesión exitoso como Administrador");
-                    MenuPrincipalAdministrador.main();
+                    //MenuPrincipalAdministrador.main();
                 } else {
                     ver = true;
                     System.out.println("Inicio de sesión exitoso como Usuario");

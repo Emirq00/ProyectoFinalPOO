@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Clase en la que se imprime la plantilla general de los diferentes tipos de vuelos que se tendrán disponibles dentro del programa, se 
@@ -13,26 +17,25 @@ import java.time.format.*;
  * vuelo de regreso (en caso de que se trate de un vuelo redondo) y la Fecha de compra.
  */
 public abstract class Vuelo implements Serializable{
-    protected int precio;
     protected String origen;
     protected String destino;
     protected int tiempoDias=0;
+    protected double precio;
     protected LocalDateTime fecha;
     protected String tipoDeVuelo;
+    protected int ticketsDisponibles;
+    protected int [][] asientosDisponibles=new int[9][20];
+    protected static final HashSet<Integer> IDList=new HashSet<>();
+    protected int ID;
+    protected static Random random=new Random();
 
-    /**
-     * @return Retorna el precio asignado al vuelo.
-     */
-    public int getPrecio() {
-        return precio;
-    }
 
     /**
      * Método para asignar el precio de un vuelo al objeto de tipo vuelo, este método tiene como fin el asignar los valores del 
      * atributo del precio sin perder la estructura de bridge y sin utilizar un constructor.
      * @param precio Asigna un valor al precio de un vuelo.
      */
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precio=precio;
     }
 
@@ -117,7 +120,7 @@ public abstract class Vuelo implements Serializable{
      * @return Retorna la cadena de cartacteres con toda la información del vuelo.
      */
     public String mostrarInformacionVuelo(){
-        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precio+"\t      Origen: "+origen+"\t      Destino: "+destino);
+        return ("Tipo de vuelo: "+tipoDeVuelo+"\t  Fecha: "+getFecha()+"  \t Precio: Desde $"+precioStandard+"\t      Origen: "+origen+"\t      Destino: "+destino);
     }
 
     /**
@@ -125,4 +128,32 @@ public abstract class Vuelo implements Serializable{
      * @return Retorna toda la información del ticket con un formato en específico.
      */
     public abstract String mostrarInformacionCompra();
+
+    // Método para comprar un ticket y asociarlo al vuelo
+    public boolean comprarTicket(Ticket ticket) {
+        if (ticket instanceof StandardTicket && ticketsStandardDisponibles > 0) {
+            ticketsStandardDisponibles--;
+            ticketList.add(ticket);
+            return true;
+        } else if (ticket instanceof PremiumTicket && ticketsPremiumDisponibles > 0) {
+            ticketsPremiumDisponibles--;
+            ticketList.add(ticket);
+            return true;
+        } else if (ticket instanceof VipTicket && ticketsVIPDisponibles > 0) {
+            ticketsVIPDisponibles--;
+            ticketList.add(ticket);
+            return true;
+        }
+        return false;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public static HashSet<Integer> getIDList() {
+        return IDList;
+    }
+
+
 }

@@ -26,8 +26,8 @@ public class TarjetaCredito extends MetodoPago{
     }
     
     @Override
-    public void pagar(double monto, int numeroTarjeta, int cvv) {
-        if(validarMetodoPago(monto, numeroTarjeta, cvv)){
+    public void pagar(double monto, int numeroTarjeta, int cvv, String nombre) {
+        if(validarMetodoPago(monto, numeroTarjeta, cvv, nombre)){
             this.limiteCredito-=monto;
         }
         else{
@@ -36,7 +36,7 @@ public class TarjetaCredito extends MetodoPago{
     }
 
     @Override
-    public boolean validarMetodoPago(double costo, int numeroTarjeta, int cvv) {
+    public boolean validarMetodoPago(double costo, int numeroTarjeta, int cvv, String nombre) {
         if (String.valueOf(numeroTarjeta).length() != 8) {
             throw new IllegalArgumentException("Número de tarjeta inválido.");
         }
@@ -46,7 +46,7 @@ public class TarjetaCredito extends MetodoPago{
         if (limiteCredito < costo) {
             return false;
         }
-        if(numeroTarjeta == this.numeroTarjeta && cvv == this.cvv)return true;
+        if(numeroTarjeta == this.numeroTarjeta && cvv == this.cvv && nombre==owner.getNombre())return true;
         return false;
     }
 

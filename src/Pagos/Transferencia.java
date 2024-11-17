@@ -50,7 +50,6 @@ public class Transferencia {
         }
 
         // Simular alguna lógica de transferencia, como descontar saldo de la cuenta origen
-        // Aquí podrías realizar validaciones adicionales
         this.boleto.setPropietario(this.cuentaDestino.getOwner());
         this.estado = "Completada";
 
