@@ -10,9 +10,9 @@ public class BaseDeDatos {
         agregarOrganizador(organizador);
     }
 
-    public void agregarUsuario(Usuario usuario) {
+    /*public void agregarUsuario(Usuario usuario) {
         baseDeDatosUsuarios.put(usuario.getEmail(), usuario);
-    }
+    }*/
 
     public void agregarOrganizador(Organizador organizador) {
         baseDeDatosOrganizadores.put(organizador.getEmail(), organizador);
