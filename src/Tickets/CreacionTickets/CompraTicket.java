@@ -55,11 +55,11 @@ public class CompraTicket{
                         case 1-> ticket = new StandardTicket(vueloSeleccionado);
                         case 2-> {
                             ticket = new PremiumTicket(vueloSeleccionado);
-                            ticket.getVuelo().setPrecio(ticket.getVuelo().getPrecio()*1.4);
+                            ticket.setPrecioVueloTicket(vueloSeleccionado.getPrecio()*1.4);;
                         }
                         case 3-> {
                             ticket = new VipTicket(vueloSeleccionado);
-                            ticket.getVuelo().setPrecio(ticket.getVuelo().getPrecio()*2);
+                            ticket.setPrecioVueloTicket(vueloSeleccionado.getPrecio()*1.9);
                         }
                         case 4-> {
                             System.out.println("Regresado...");

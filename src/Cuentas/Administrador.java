@@ -1,19 +1,11 @@
 package Cuentas;
-
-//import Eventos.Evento;
-import Pagos.MetodoPago;
-
-import java.util.List;
-import java.util.Set;
-
-public class Organizador extends Usuario{
-    //private List<Evento> EventosRealizados;
+public class Administrador extends Usuario{
     private String nombre;
     private int edad;
     private String password;
     private String email;
 
-    public Organizador(String nombre, int edad, String password, String email){
+    public Administrador(String nombre, int edad, String password, String email){
         this.nombre=nombre;
         this.edad=edad;
         this.password=password;
@@ -51,23 +43,4 @@ public class Organizador extends Usuario{
     public void setEmail(String email) {
         this.email = email;
     }
-    /*
-    public void crearEvento(Evento evento){
-        //implementacion
-    }
-
-    public void modificarEvento(Evento evento){
-        //implementacion
-    }
-
-    public String verIngresos(Evento evento){
-        return "";
-        //implementacion
-    }
-
-    public String verEstadisticas(Evento evento){
-        return "";
-    }
-    */
-
 }

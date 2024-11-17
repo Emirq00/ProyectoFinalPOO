@@ -14,6 +14,7 @@ public abstract class Ticket implements Serializable{
     //Bridge
     protected Vuelo vuelo;
     protected String asiento;
+    protected double precioVueloTicket;
 
     public Usuario getPropietario() {
         return propietario;
@@ -62,6 +63,22 @@ public abstract class Ticket implements Serializable{
      */
     public void setAsiento(String asiento) {
         this.asiento = asiento;
+    }
+
+    /**
+     * Método en el que se asigna el precio al ticket que se va a comprar.
+     * @param precioVueloTicket Variable con el precio que se va a asignar al ticket.
+     */
+    public void setPrecioVueloTicket(double precioVueloTicket) {
+        this.precioVueloTicket = precioVueloTicket;
+    }
+
+    /**
+     * Método en el que se recupera el precio del ticket que se va a comprar.
+     * @return Variable con el precio del ticket que se va a comprar.
+     */
+    public double getPrecioVueloTicket() {
+        return precioVueloTicket;
     }
 
     /**
