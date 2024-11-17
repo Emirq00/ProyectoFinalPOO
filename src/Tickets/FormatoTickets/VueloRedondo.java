@@ -46,10 +46,11 @@ public class VueloRedondo extends Vuelo{
      *   - Tiempo en días entre los dos vuelos (ida y regreso).
      */
     @Override
-    public String mostrarInformacionCompra(String asiento) {
+    public String mostrarInformacionCompra(String asiento, String tipoTicket){
         return "==========================================\n"+
         "   Resumen de su compra:\n"+
         "   Tipo de vuelo: "+tipoDeVuelo+"\n"+
+        "   Ticket: "+tipoTicket+"\n"+
         "   Origen: "+origen+"\n"+
         "   Destino: "+destino+"\n"+
         "   Asiento: "+ asiento +"\n"+

@@ -1,8 +1,6 @@
 package Tickets.FormatoTickets;
 
 import java.io.Serializable;
-
-import Cuentas.Cliente;
 import Cuentas.Usuario;
 
 /**
@@ -48,6 +46,14 @@ public abstract class Ticket implements Serializable{
      */
     public String getAsiento() {
         return asiento;
+    }
+
+    /**
+     * Método en el que se recupera el tipo de ticket que se va a comprar.
+     * @return Variable con el tipo de ticket que se va a comprar.
+     */
+    public String getTipoTicket() {
+        return tipoTicket;
     }
 
     /**

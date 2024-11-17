@@ -24,26 +24,6 @@ public class MenuPrincipalCliente extends Menu{
         CompraTicket.iniciarVuelosPrueba();
         consultarTodosLosVuelosArchivo();
 
-        ObjectInputStream archivoObjetos = null;
-        try {
-            archivoObjetos = new ObjectInputStream(new FileInputStream("src/Tickets/TicketsComprados/Fernando"));
-            Ticket ticket = (Ticket) archivoObjetos.readObject();
-            System.out.println(ticket.getVuelo().mostrarInformacionVuelo());
-            
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        } finally {
-            try {
-                if (archivoObjetos != null) {
-                    archivoObjetos.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
-
         do{
 
             System.out.println("\n======== Bienvenido a nuestra página " +"nombre de usuario"+"========");
@@ -67,7 +47,7 @@ public class MenuPrincipalCliente extends Menu{
 
             switch (decision) {
                 case 1->consultaVuelos(); 
-                case 2->{} //Implementación de la impresion de los vuelos.
+                case 2->descargarBoletos();
                 case 3->scanner.close();
                 default->System.out.println("* Ingrese una opción válida");
             }
@@ -197,4 +177,36 @@ public class MenuPrincipalCliente extends Menu{
         System.out.println("   Se refiere al tiempo que transcurre entre el vuelo de ida y el vuelo de regreso, este tiempo puede variar y solamente ");
         System.out.println("   aplica para los vuelos redondos. La fecha entre ambos vuelos está unicamente disponible al momento de la compra.\n");
     }
+
+
+
+    /**
+     * Método con el que descargaremos los boletos de los vuelos que el usuario haya comprado, para ello se accederá a un archivo de texto
+     * en el que se almacenarán los boletos de los vuelos comprados, estos boletos se podrán consultar en cualquier momento y lugar.
+     */
+    private static void descargarBoletos(){
+        System.out.println("Descargando boletos...");
+        ObjectInputStream archivoObjetos = null;
+        try {
+            archivoObjetos = new ObjectInputStream(new FileInputStream("src/Tickets/TicketsComprados/Fernando"));
+            Ticket TicketImprimir=(Ticket)archivoObjetos.readObject();
+            TicketImprimir.imprimirTicket();
+            
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error al descargar los boletos");
+        } catch (IOException e) {
+            System.out.println("Error al descargar los boletos");
+        } finally {
+            try {
+                if (archivoObjetos != null) {
+                    archivoObjetos.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
 }
+
+
+

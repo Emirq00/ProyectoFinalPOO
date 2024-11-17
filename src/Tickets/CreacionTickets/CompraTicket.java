@@ -53,8 +53,14 @@ public class CompraTicket{
                     int opcion = scanner.nextInt();
                     switch(opcion){
                         case 1-> ticket = new StandardTicket(vueloSeleccionado);
-                        case 2-> ticket = new PremiumTicket(vueloSeleccionado);
-                        case 3-> ticket = new VipTicket(vueloSeleccionado);
+                        case 2-> {
+                            ticket = new PremiumTicket(vueloSeleccionado);
+                            ticket.getVuelo().setPrecio(ticket.getVuelo().getPrecio()*1.4);
+                        }
+                        case 3-> {
+                            ticket = new VipTicket(vueloSeleccionado);
+                            ticket.getVuelo().setPrecio(ticket.getVuelo().getPrecio()*2);
+                        }
                         case 4-> {
                             System.out.println("Regresado...");
                             return;
@@ -104,7 +110,7 @@ public class CompraTicket{
             } while (entradaInvalida);
 
             System.out.println("\nResumen de compra:");
-            System.out.println(ticket.getVuelo().mostrarInformacionCompra(opcion));
+            System.out.println(ticket.getVuelo().mostrarInformacionCompra(opcion, ticket.getTipoTicket()));
             System.out.println("¿Qué deseas hacer?");
             System.out.println("1. Proseguir al pago");
             System.out.println("2. Regresar a la selección de tickets");

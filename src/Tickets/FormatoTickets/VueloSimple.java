@@ -44,10 +44,11 @@ public class VueloSimple extends Vuelo{
      * <p>
      */
     @Override
-    public String mostrarInformacionCompra(String asiento) {
+    public String mostrarInformacionCompra(String asiento, String tipoTicket) {
         return "==========================================\n"+
         "   Resumen de su compra:\n"+
         "   Tipo de vuelo: "+tipoDeVuelo+"\n"+
+        "   Ticket: "+tipoTicket+"\n"+
         "   Origen: "+origen+"\n"+
         "   Destino: "+destino+"\n"+
         "   Asiento: "+ asiento +"\n"+ 
