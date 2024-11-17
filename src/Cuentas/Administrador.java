@@ -1,15 +1,17 @@
 package Cuentas;
-public class Administrador extends Usuario{
+import java.io.Serializable;
+
+public class Administrador extends Usuario implements Serializable {
     private String nombre;
     private int edad;
     private String password;
     private String email;
 
-    public Administrador(String nombre, int edad, String password, String email){
-        this.nombre=nombre;
-        this.edad=edad;
-        this.password=password;
-        this.email=email;
+    public Administrador(String nombre, int edad, String password, String email) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.password = password;
+        this.email = email;
     }
 
     public int getEdad() {

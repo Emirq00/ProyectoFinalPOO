@@ -1,5 +1,6 @@
 package Cuentas;
 
+import java.io.*;
 import java.util.*;
 
 public class BaseDeDatos {
@@ -13,18 +14,22 @@ public class BaseDeDatos {
 
     public void agregarUsuario(Cliente usuario) {
         baseDeDatosUsuarios.put(usuario.getEmail(), usuario);
+        guardarEnArchivo();
     }
 
     public void agregarAdministrador(Administrador administrador) {
         baseDeDatosAdministradores.put(administrador.getEmail(), administrador);
+        guardarEnArchivo();
     }
 
     public void eliminarUsuario(String email) {
         baseDeDatosUsuarios.remove(email);
+        guardarEnArchivo();
     }
 
     public void eliminarAdministrador(String email) {
         baseDeDatosAdministradores.remove(email);
+        guardarEnArchivo();
     }
 
     public Cliente obtenerUsuario(String email) {
@@ -36,7 +41,7 @@ public class BaseDeDatos {
     }
 
     public boolean validarUsuario(String email, String password) {
-        Usuario usuario = baseDeDatosUsuarios.get(email);
+        Cliente usuario = baseDeDatosUsuarios.get(email);
         return usuario != null && usuario.getPassword().equals(password);
     }
 
@@ -52,6 +57,24 @@ public class BaseDeDatos {
             return "Usuario";
         } else {
             return "No encontrado";
+        }
+    }
+
+    private void guardarEnArchivo() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("baseDeDatos"))) {
+            oos.writeObject(baseDeDatosUsuarios);
+            oos.writeObject(baseDeDatosAdministradores);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cargarDeArchivo() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("baseDeDatos"))) {
+            baseDeDatosUsuarios = (HashMap<String, Cliente>) ois.readObject();
+            baseDeDatosAdministradores = (HashMap<String, Administrador>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }
