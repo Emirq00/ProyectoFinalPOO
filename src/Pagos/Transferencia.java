@@ -1,59 +1,71 @@
 package Pagos;
 
+import Cuentas.Cliente;
 import Cuentas.Usuario;
-import Tickets.FormatoTickets.Ticket;
 
-public class Transferencia {
-    private Ticket boleto;
-    private TarjetaCredito cuentaDestino;
+public class Transferencia extends MetodoPago {
+    private InformacionPago cuentaOrigen;
+    private double monto;
     private String estado;
 
-    /**
-     * Inicia una transferencia asociando un boleto y una cuenta destino.
-     *
-     * @param boleto        El boleto que se transfiere.
-     * @param destinatario  El usuario que recibe la transferencia.
-     */
-    public void iniciarTransferencia(Ticket boleto, Usuario destinatario) {
-        if (boleto == null || destinatario == null) {
-            throw new IllegalArgumentException("El boleto y el destinatario no pueden ser nulos.");
+    public Transferencia(InformacionPago cuentaOrigen) {
+        super("Transferencia Bancaria", "Pago mediante transferencia entre cuentas", cuentaOrigen);
+        if (cuentaOrigen == null) {
+            throw new IllegalArgumentException("La cuenta origen no puede ser nula.");
         }
-
-        this.boleto = boleto;
-        this.cuentaDestino = null;
-
-        // Buscar la primera instancia de TarjetaCredito
-        for (MetodoPago x : destinatario.getMetodosPagos()) {
-            if (x instanceof TarjetaCredito) {
-                this.cuentaDestino = (TarjetaCredito) x;
-                break; // Salir del bucle al encontrar una TarjetaCredito
-            }
-        }
-
-        if (this.cuentaDestino == null) {
-            throw new IllegalStateException("El destinatario no tiene un método de pago válido (Tarjeta de Crédito).");
-        }
-
+        this.cuentaOrigen = cuentaOrigen;
         this.estado = "Pendiente";
-        System.out.println("Transferencia iniciada. Boleto asociado: ");
-        boleto.mostrarInformacion();
     }
 
-
-    /**
-     * Acepta y completa la transferencia.
-     * Actualiza el estado del boleto y de la transferencia.
-     */
-    public void aceptarTransferencia() {
-        if (!"Pendiente".equals(this.estado)) {
-            throw new IllegalStateException("La transferencia no está en estado pendiente.");
+    @Override
+    public void pagar(double monto, InformacionPago informacionPago) {
+        if (!validarMetodoPago(monto, informacionPago)) {
+            System.out.println("La transferencia no pudo completarse. Verifique los datos.");
+            return;
         }
 
-        // Simular alguna lógica de transferencia, como descontar saldo de la cuenta origen
-        this.boleto.setPropietario(this.cuentaDestino.getOwner());
+        // Simular el descuento de fondos de la cuenta origen
+        this.cuentaOrigen.restarFondos(monto);
+        this.monto = monto;
         this.estado = "Completada";
 
-        System.out.println("Transferencia aceptada. El boleto pertenece a: "
-                + this.cuentaDestino.getOwner().getNombre());
+        System.out.println("Transferencia completada exitosamente. Monto: " + monto);
+    }
+
+    @Override
+    public boolean validarMetodoPago(double costo, InformacionPago informacionPago) {
+        // Validar si el monto es válido
+        if (costo <= 0) {
+            System.out.println("El monto de la transferencia debe ser mayor a cero.");
+            return false;
+        }
+
+        // Validar si la cuenta origen tiene fondos suficientes
+        if (cuentaOrigen.getFondos()>=costo) {
+            System.out.println("Fondos insuficientes en la cuenta de origen.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public InformacionPago getCuentaOrigen() {
+        return cuentaOrigen;
+    }
+
+    public void agregarFondos(double monto){
+        getInfo().agregarFondos(monto);
+    }
+
+    public void RestarMonto(double monto){
+        getInfo().restarFondos(monto);
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public String getEstado() {
+        return estado;
     }
 }

@@ -152,14 +152,14 @@ public class CompraTicket{
 
     // Método para comprar un ticket y asociarlo al vuelo
     public static boolean pago(Ticket ticket) {
-        if (ticket instanceof StandardTicket && ticket.getVuelo().getTicketsStandardDisponibles() > 0) {
+        if (ticket instanceof StandardTicket && ticket.getVuelo().ticketsStandardDisponibles > 0) {
             ticket.getVuelo().ticketsStandardDisponibles--;
             return true;
-        } else if (ticket instanceof PremiumTicket && ticket.getVuelo().getTicketsPremiumDisponibles() > 0) {
+        } else if (ticket instanceof PremiumTicket && ticket.getVuelo().ticketsPremiumDisponibles > 0) {
             ticket.getVuelo().ticketsPremiumDisponibles--;
             return true;
-        } else if (ticket instanceof VipTicket && ticket.getVuelo().getTicketsVIPDisponibles() > 0) {
-            ticket.getVuelo().ticketsVIPDisponibles--;
+        } else if (ticket instanceof VipTicket && ticket.getVuelo().ticketsVipDisponibles > 0) {
+            ticket.getVuelo().ticketsVipDisponibles--;
             return true;
         }
         return false;

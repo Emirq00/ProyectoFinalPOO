@@ -1,58 +1,89 @@
 package Pagos;
 
+import Cuentas.Cliente;
 import Cuentas.Usuario;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Random;
 
-public class TarjetaCredito extends MetodoPago{
-    private Usuario owner;
+public class TarjetaCredito extends MetodoPago {
     private int numeroTarjeta;
     private LocalDate fechaExpiracion;
     private int cvv;
     private double limiteCredito;
-    private static Random random=new Random();
-    private static final HashSet<Integer> listaTarjetas=new HashSet<>();
+    private static final Random random = new Random();
+    private static final HashSet<Integer> listaTarjetas = new HashSet<>();
 
-    public TarjetaCredito(Usuario owner){
-        this.owner=owner;
-        do{
-            this.numeroTarjeta= random.nextInt((99999999 - 10000000) + 1) + 10000000;
-        }while (!listaTarjetas.add(this.numeroTarjeta));
-        this.cvv=random.nextInt(100, 999);
-        this.limiteCredito=50000;
-        this.fechaExpiracion=LocalDate.of(2028, 11, 16);
+    public TarjetaCredito(InformacionPago infor) {
+        super("Tarjeta de Crédito", "Pago con tarjeta bancaria", infor);
+        this.numeroTarjeta = generarNumeroTarjetaUnico();
+        this.cvv = random.nextInt(100, 999);
+        this.limiteCredito = 50000; // Límite inicial estándar
+        this.fechaExpiracion = LocalDate.of(2028, 11, 16);
     }
-    
-    @Override
-    public void pagar(double monto, int numeroTarjeta, int cvv, String nombre) {
-        if(validarMetodoPago(monto, numeroTarjeta, cvv, nombre)){
-            this.limiteCredito-=monto;
-        }
-        else{
-            System.out.println("Proceso de pago rechazado. Intente nuevamente");
-        }
+
+    private int generarNumeroTarjetaUnico() {
+        int numero;
+        do {
+            numero = random.nextInt((99999999 - 10000000) + 1) + 10000000;
+        } while (!listaTarjetas.add(numero));
+        return numero;
     }
 
     @Override
-    public boolean validarMetodoPago(double costo, int numeroTarjeta, int cvv, String nombre) {
-        if (String.valueOf(numeroTarjeta).length() != 8) {
+    public void pagar(double monto, InformacionPago informacionPago) {
+        if (validarMetodoPago(monto, informacionPago)) {
+            this.limiteCredito -= monto;
+            System.out.println("Pago realizado exitosamente por un monto de: " + monto);
+        } else {
+            System.out.println("Proceso de pago rechazado. Intente nuevamente.");
+        }
+    }
+
+    @Override
+    public boolean validarMetodoPago(double costo, InformacionPago informacionPago) {
+        if (String.valueOf(informacionPago.getNumeroTarjeta()).length() != 8) {
             throw new IllegalArgumentException("Número de tarjeta inválido.");
         }
-        if (String.valueOf(cvv).length() != 3) {
+        if (String.valueOf(informacionPago.getCvv()).length() != 3) {
             throw new IllegalArgumentException("CVV inválido.");
         }
-        if (limiteCredito < costo) {
+        if (this.limiteCredito < costo) {
+            System.out.println("Fondos insuficientes.");
             return false;
         }
-        if(numeroTarjeta == this.numeroTarjeta && cvv == this.cvv && nombre==owner.getNombre())return true;
-        return false;
-    }
-
-    public Usuario getOwner() {
-        return owner;
+        return this.numeroTarjeta == informacionPago.getNumeroTarjeta()
+                && this.cvv == informacionPago.getCvv();
     }
 
 
+
+    public int getNumeroTarjeta() {
+        return numeroTarjeta;
+    }
+
+    public LocalDate getFechaExpiracion() {
+        return fechaExpiracion;
+    }
+
+    public int getCvv() {
+        return cvv;
+    }
+
+    public double getLimiteCredito() {
+        return limiteCredito;
+    }
+
+    public void setLimiteCredito(double limiteCredito) {
+        this.limiteCredito = limiteCredito;
+    }
+
+    public void setNumeroTarjeta(int numTarjeta) {
+        this.numeroTarjeta=numTarjeta;
+    }
+
+    public void setCvv(int cvv) {
+        this.cvv = cvv;
+    }
 }
