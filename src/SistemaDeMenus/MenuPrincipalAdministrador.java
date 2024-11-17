@@ -138,7 +138,7 @@ public class MenuPrincipalAdministrador {
             System.out.println("Usuario eliminado exitosamente.");
         } else {
             System.out.println("Usuario no encontrado.");
+
         }
     }
 }
-
