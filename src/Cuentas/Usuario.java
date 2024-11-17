@@ -1,11 +1,11 @@
 package Cuentas;
-
+import java.io.Serializable;
 import Pagos.MetodoPago;
 
 import java.util.List;
 import java.util.Set;
 
-public abstract class Usuario implements UsuarioBase {
+public abstract class Usuario implements UsuarioBase, Serializable {
     private String nombre;
     private int edad;
     private String password;
@@ -13,13 +13,13 @@ public abstract class Usuario implements UsuarioBase {
     private List<String> historialBusqueda;
     private List<MetodoPago> metodosPagos;
 
-    public Usuario(){};
+    public Usuario() {}
 
-    public Usuario(String nombre, int edad, String email, String password){
-        this.nombre=nombre;
-        this.edad=edad;
-        this.password=password;
-        this.email=email;
+    public Usuario(String nombre, int edad, String password, String email) {
+        this.nombre = nombre;
+        this.edad = edad;
+        this.password = password;
+        this.email = email;
     }
 
     public int getEdad() {
@@ -34,6 +34,10 @@ public abstract class Usuario implements UsuarioBase {
         return password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEdad(int edad) {
         this.edad = edad;
     }
@@ -46,36 +50,31 @@ public abstract class Usuario implements UsuarioBase {
         this.password = password;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public void registrarUsuario(String nombre, int edad, String email, String password) {
-        //implementacion
+        // Implementación
     }
 
     @Override
     public void modificarDatos(String nombre, int edad, String email, String password) {
-        //implementacion
+        // Implementación
     }
 
     @Override
     public void iniciarSesion(String email, String password) {
-        //implementacion
+        // Implementación
     }
 
     @Override
     public void cerrarSesion() {
-        //implementacion
+        // Implementación
     }
 
-
-    public void verHistorial(){
-        //implementacion
-    }
-
-    public List<MetodoPago> getMetodosPagos() {
-        return metodosPagos;
-    }
-
-    public String getEmail() {
-        return email;
+    public void verHistorial() {
+        // Implementación
     }
 }
