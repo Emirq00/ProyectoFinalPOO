@@ -5,7 +5,9 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Clase en la que se imprime la plantilla general de los diferentes tipos de vuelos que se tendrán disponibles dentro del programa, se 
@@ -27,6 +29,9 @@ public abstract class Vuelo implements Serializable{
     protected int ticketsPremiumDisponibles;
     protected int ticketsVIPDisponibles;
     protected List<Ticket> ticketList;
+    protected static final HashSet<Integer> IDList=new HashSet<>();
+    protected int ID;
+    protected static Random random=new Random();
 
 
     public Vuelo(String destino, String origen, double precioStandard, double precioPremium, double precioVIP, int ticketsStandard, int ticketsPremium, int ticketsVIP){
@@ -39,16 +44,30 @@ public abstract class Vuelo implements Serializable{
         this.ticketsPremiumDisponibles = ticketsPremium;
         this.ticketsVIPDisponibles = ticketsVIP;
         this.ticketList=new ArrayList<>();
+        do{
+            this.ID=random.nextInt(100000, 999999);
+        }while (!IDList.add(this.ID));
     }
+
+
+    public Vuelo(){}
+
+
     /**
-     * @return Retorna el precio asignado al vuelo.
+     * @return Retorna el precio estándar asignado al vuelo.
      */
     public double getPrecioStandard() {
         return precioStandard;
     }
 
+    /**
+     * @return Retorna el precio premium asignado al vuelo.
+     */
     public double getPrecioPremium() {return precioPremium;}
 
+    /**
+     * @return Retorna el precio vip asignado al vuelo.
+     */
     public double getPrecioVIP() {return precioVIP;}
 
 
@@ -57,10 +76,15 @@ public abstract class Vuelo implements Serializable{
      * atributo del precio sin perder la estructura de bridge y sin utilizar un constructor.
      * @param precio Asigna un valor al precio de un vuelo.
      */
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precioStandard=precio;
     }
 
+    /**
+     * Método para asignar el precio de un vuelo al objeto de tipo vuelo, este método tiene como fin el asignar los valores del
+     * atributo del precio sin perder la estructura de bridge y sin utilizar un constructor.
+     * @param precioPremium Asigna un valor al precio de un vuelo.
+     */
     public void setPrecioPremium(double precioPremium) {this.precioPremium = precioPremium;}
 
     public void setPrecioStandard(double precioStandard) {this.precioStandard = precioStandard;}
@@ -181,4 +205,14 @@ public abstract class Vuelo implements Serializable{
         }
         return false;
     }
+
+    public int getID() {
+        return ID;
+    }
+
+    public static HashSet<Integer> getIDList() {
+        return IDList;
+    }
+
+
 }

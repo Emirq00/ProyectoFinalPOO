@@ -11,6 +11,8 @@ public class VueloRedondo extends Vuelo{
         super(destino, origen, precioStandard, precioPremium, precioVIP, ticketsStandard, ticketsPremium, ticketsVIP);
     }
 
+    public VueloRedondo(){}
+
     /**
      * Método en el que retorna toda la información de una compra de un ticket mediante un formato específico por lo que solamente se 
      * recomienda utilizarse cuando la compra del ticket esté por finalizar. La información retornada incluye:
@@ -32,7 +34,7 @@ public class VueloRedondo extends Vuelo{
         "   Origen: "+origen+"\n"+
         "   Destino: "+destino+"\n"+
         "   Fecha de vuelo: "+fecha+"\n"+
-        "   Precio: "+precioStandard+"\n"+
+        "   Precio Estándar: "+precioStandard+"\n"+
         "   Tiempo entre vuelos: "+tiempoDias+" días\n"+
         "==========================================\n";
     }

@@ -9,7 +9,7 @@ public class VueloSimple extends Vuelo{
     public VueloSimple(String destino, String origen, double precioStandard, double precioPremium, double precioVIP, int ticketsStandard, int ticketsPremium, int ticketsVIP) {
         super(destino, origen, precioStandard, precioPremium, precioVIP, ticketsStandard, ticketsPremium, ticketsVIP);
     }
-
+    public VueloSimple(){}
     /**
      * Método en el que retorna toda la información de una compra de un ticket mediante un formato específico por lo que solamente se 
      * recomienda utilizarse cuando la compra del ticket esté por finalizar. La información retornada incluye:
