@@ -1,37 +1,38 @@
+package Cuentas;
+
 import java.util.*;
-import Cuentas.*;
 
 public class BaseDeDatos {
-    private HashMap<String, Usuario> baseDeDatosUsuarios = new HashMap<>();
-    private HashMap<String, Organizador> baseDeDatosOrganizadores = new HashMap<>();
+    private HashMap<String, Cliente> baseDeDatosUsuarios = new HashMap<>();
+    private HashMap<String, Administrador> baseDeDatosAdministradores = new HashMap<>();
 
     public BaseDeDatos() {
-        Organizador organizador = new Organizador("Admin", 30, "admin123", "admin@aeroviajes.com");
-        agregarOrganizador(organizador);
+        Administrador administrador = new Administrador("Admin", 30, "admin123", "admin@aeroviajes.com");
+        agregarAdministrador(administrador);
     }
 
-    /*public void agregarUsuario(Usuario usuario) {
+    public void agregarUsuario(Cliente usuario) {
         baseDeDatosUsuarios.put(usuario.getEmail(), usuario);
-    }*/
+    }
 
-    public void agregarOrganizador(Organizador organizador) {
-        baseDeDatosOrganizadores.put(organizador.getEmail(), organizador);
+    public void agregarAdministrador(Administrador administrador) {
+        baseDeDatosAdministradores.put(administrador.getEmail(), administrador);
     }
 
     public void eliminarUsuario(String email) {
         baseDeDatosUsuarios.remove(email);
     }
 
-    public void eliminarOrganizador(String email) {
-        baseDeDatosOrganizadores.remove(email);
+    public void eliminarAdministrador(String email) {
+        baseDeDatosAdministradores.remove(email);
     }
 
-    public Usuario obtenerUsuario(String email) {
+    public Cliente obtenerUsuario(String email) {
         return baseDeDatosUsuarios.get(email);
     }
 
-    public Organizador obtenerOrganizador(String email) {
-        return baseDeDatosOrganizadores.get(email);
+    public Administrador obtenerAdministrador(String email) {
+        return baseDeDatosAdministradores.get(email);
     }
 
     public boolean validarUsuario(String email, String password) {
@@ -39,14 +40,14 @@ public class BaseDeDatos {
         return usuario != null && usuario.getPassword().equals(password);
     }
 
-    public boolean validarOrganizador(String email, String password) {
-        Organizador organizador = baseDeDatosOrganizadores.get(email);
-        return organizador != null && organizador.getPassword().equals(password);
+    public boolean validarAdministrador(String email, String password) {
+        Administrador administrador = baseDeDatosAdministradores.get(email);
+        return administrador != null && administrador.getPassword().equals(password);
     }
 
     public String obtenerRol(String email) {
-        if (baseDeDatosOrganizadores.containsKey(email)) {
-            return "Organizador";
+        if (baseDeDatosAdministradores.containsKey(email)) {
+            return "Administrador";
         } else if (baseDeDatosUsuarios.containsKey(email)) {
             return "Usuario";
         } else {
@@ -54,4 +55,3 @@ public class BaseDeDatos {
         }
     }
 }
-

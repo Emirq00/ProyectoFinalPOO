@@ -1,4 +1,4 @@
-package Pagos;
+/*package Pagos;
 
 import Cuentas.Cliente;
 import Tickets.FormatoTickets.Vuelo;
@@ -175,3 +175,4 @@ public class CompraVuelos {
         transferencia.pagar(monto, transferencia.getInfo());
     }
 }
+*/

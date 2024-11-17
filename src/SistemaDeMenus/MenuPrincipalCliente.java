@@ -2,6 +2,7 @@ package SistemaDeMenus;
 
 import java.io.*;
 
+import Cuentas.Cliente;
 import Tickets.CreacionTickets.CompraTicket;
 import Tickets.FormatoTickets.*;
 import java.util.*;
@@ -18,7 +19,7 @@ public class MenuPrincipalCliente extends Menu{
      * permitiendo al usuario realizar cualquier operación del sistema de manera ininterrumpida, para finalizar el programa el
      * usuario deberá ingresar la opción señalada en el menú como "Salir", permitiendo así romper el bucle while.
      */
-    public static void main(String [] args){
+    public static void main(Cliente cliente){
         int decision=0;
         //Comenzamos siempre recuperando los vuelos disponibles del archivo de vuelos
         CompraTicket.iniciarVuelosPrueba();
@@ -66,7 +67,7 @@ public class MenuPrincipalCliente extends Menu{
             } while (incorrectEntry || decision<1 || decision>3);
 
             switch (decision) {
-                case 1->consultaVuelos(); 
+                case 1->consultaVuelos(cliente);
                 case 2->{} //Implementación de la impresion de los vuelos.
                 case 3->scanner.close();
                 default->System.out.println("* Ingrese una opción válida");
@@ -80,7 +81,7 @@ public class MenuPrincipalCliente extends Menu{
      * Método que muestra todos los vuelos, permitiendo al usuario observar los vuelos disponibles, para ello accederemos a un archivo
      * de objetos en el que anteriormente el administrador habrá guardado los vuelos disponibles, junto con 5 vuelos de ejemplo.
      */
-    private static void consultaVuelos(){
+    private static void consultaVuelos(Cliente cliente){
         
         boolean notRecognizedEntry=false;
         String decision;
@@ -91,7 +92,7 @@ public class MenuPrincipalCliente extends Menu{
             do{
                 System.out.print("Ingrese su entrada: ");
                 decision = scanner.nextLine();
-                notRecognizedEntry=filtroPalabras(decision, numeroDeVuelosDisponibles);
+                notRecognizedEntry=filtroPalabras(decision, numeroDeVuelosDisponibles, cliente);
                 
             } while (notRecognizedEntry);
 
@@ -133,7 +134,7 @@ public class MenuPrincipalCliente extends Menu{
      * @return Devuelve true en caso de que se haya ingresado una entrada inválida, devuelve false en caso de que se haya ingresado una entrada válida.
      * Esta entrada válida puede ser "HELP", "SALIR" o "RESERVAR" seguido del número del vuelo y romperán el ciclo while en el método consultaVuelos.
      */
-    private static boolean filtroPalabras(String decision, int numeroDeVuelosDisponibles){
+    private static boolean filtroPalabras(String decision, int numeroDeVuelosDisponibles, Cliente cliente){
         if(decision.equals("HELP")){
             mostrarInformacionHELPVuelos();
             return false;
@@ -153,7 +154,7 @@ public class MenuPrincipalCliente extends Menu{
                 int i;
                 for(i=1; i<=numeroDeVuelosDisponibles; i++){
                     if(decision.charAt(decision.length()-1)==Integer.toString(i).charAt(0)){
-                        CompraTicket.comprarTicket(vuelosDisponibles.get(i));
+                        CompraTicket.comprarTicket(vuelosDisponibles.get(i), cliente);
                         return false;
                     }
                 }

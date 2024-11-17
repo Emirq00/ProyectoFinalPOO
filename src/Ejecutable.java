@@ -14,12 +14,8 @@ public class Ejecutable {
             System.out.println("2. Registrarse");
             System.out.println("3. Salir");
             System.out.print("Seleccione una opción: ");
-            if (scanner.hasNextInt()) {
-                opcion = scanner.nextInt();
-            } else {
-                System.out.println("Entrada no válida, intente nuevamente");
-                scanner.nextLine();
-            }
+            opcion=scanner.nextInt();
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -65,7 +61,7 @@ public class Ejecutable {
                 } else {
                     ver = true;
                     System.out.println("Inicio de sesión exitoso como Usuario");
-                    //MenuPrincipalCliente.main({"1", "2"});
+                    MenuPrincipalCliente.main(baseDeDatos.obtenerUsuario(email));
                 }
             } else {
                 System.out.println("Datos incorrectos, intente nuevamente");
@@ -78,7 +74,7 @@ public class Ejecutable {
         do {
             try {
                 if (baseDeDatos.obtenerUsuario(email) == null) {
-                    Usuario nuevoUsuario = new Usuario() {};
+                    Cliente nuevoUsuario = new Cliente() {};
                     nuevoUsuario.registrarUsuario(nombre, edad, email, password);
                     baseDeDatos.agregarUsuario(nuevoUsuario);
                     System.out.println("Usuario registrado exitosamente.");
