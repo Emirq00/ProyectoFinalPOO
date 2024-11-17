@@ -21,7 +21,7 @@ public class Organizador extends Usuario{
     }
 
     public String verEstadisticas(Evento evento){
-        //implementacion
+        return "";
     }
 
 
