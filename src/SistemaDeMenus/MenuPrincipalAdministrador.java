@@ -3,9 +3,8 @@ package SistemaDeMenus;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 import java.util.InputMismatchException;
-import java.util.HashMap;
 import Cuentas.*;
-import Tickets.CreacionTickets.CompraTicket;
+import Organizacion.BaseDeDatosVuelos;
 import Tickets.FormatoTickets.Vuelo;
 import Tickets.FormatoTickets.VueloRedondo;
 
@@ -13,7 +12,7 @@ public class MenuPrincipalAdministrador {
     private static Scanner scanner = new Scanner(System.in);
     private static boolean incorrectEntry;
     private static BaseDeDatos baseDeDatos = new BaseDeDatos();
-    private static VuelosSubject vuelosSubject = new VuelosSubject();
+    private static BaseDeDatosVuelos baseDeDatosVuelos = new BaseDeDatosVuelos();
 
     public static void menuAdministrador() {
         int decision = 0;
@@ -57,7 +56,6 @@ public class MenuPrincipalAdministrador {
 
     public static void mostrarVuelos() {
         System.out.println("Mostrando vuelos disponibles...");
-        MenuPrincipalCliente.consultarTodosLosVuelosArchivo();
         int opcion = 0;
         do {
             try {
@@ -95,39 +93,42 @@ public class MenuPrincipalAdministrador {
     }
 
     private static void agregarVuelo() {
-        int nuevoNumeroVuelo = vuelosDisponibles.size() + 1;
-        System.out.print("Ingrese el origen del vuelo: ");
-        String origen = scanner.nextLine();
-        System.out.print("Ingrese el destino del vuelo: ");
-        String destino = scanner.nextLine();
-        System.out.print("Ingrese la fecha y hora del vuelo (AAAA-MM-DDTHH:MM): ");
-        LocalDateTime fechaHora = LocalDateTime.parse(scanner.nextLine());
-        System.out.print("Ingrese el precio del vuelo: ");
-        double precio = scanner.nextDouble();
-        scanner.nextLine();  
-        System.out.print("Ingrese la duración del vuelo (en horas): ");
-        int duracion = scanner.nextInt();
-        scanner.nextLine();
-        Vuelo nuevoVuelo = new VueloRedondo(origen, destino, fechaHora, precio, duracion);
-        vuelosDisponibles.put(nuevoNumeroVuelo, nuevoVuelo);
-        vuelosSubject.agregarVuelo(nuevoVuelo);
-        System.out.println("Vuelo agregado exitosamente.");
-    }
-    
-    private static void eliminarVuelo() {
-        System.out.print("Ingrese el número del vuelo a eliminar: ");
-        int numeroVuelo = scanner.nextInt();
-        scanner.nextLine(); 
-        if (vuelosDisponibles.containsKey(numeroVuelo)) {
-            Vuelo vuelo = vuelosDisponibles.remove(numeroVuelo);
-            vuelosSubject.eliminarVuelo(vuelo);
-            System.out.println("Vuelo eliminado exitosamente.");
-        } else {
-            System.out.println("Número de vuelo no encontrado.");
+        try {
+            System.out.print("Ingrese el origen del vuelo: ");
+            String origen = scanner.nextLine();
+            System.out.print("Ingrese el destino del vuelo: ");
+            String destino = scanner.nextLine();
+            System.out.print("Ingrese la fecha y hora del vuelo (AAAA-MM-DDTHH:MM): ");
+            LocalDateTime fechaHora = LocalDateTime.parse(scanner.nextLine());
+            System.out.print("Ingrese el precio del vuelo: ");
+            double precio = scanner.nextDouble();
+            scanner.nextLine();
+            System.out.print("Ingrese la duración del vuelo (en horas): ");
+            int duracion = scanner.nextInt();
+            scanner.nextLine();
+            Vuelo nuevoVuelo = new VueloRedondo(origen, destino, fechaHora, precio, duracion);
+            baseDeDatosVuelos.agregarVuelo(nuevoVuelo);
+            System.out.println("Vuelo agregado exitosamente.");
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al agregar el vuelo: " + e.getMessage());
         }
     }
-    
 
+    private static void eliminarVuelo() {
+        try {
+            System.out.print("Ingrese el número del vuelo a eliminar: ");
+            int numeroVuelo = scanner.nextInt();
+            scanner.nextLine();
+            if (baseDeDatosVuelos.obtenerVuelo(numeroVuelo) != null) {
+                baseDeDatosVuelos.eliminarVuelo(numeroVuelo);
+                System.out.println("Vuelo eliminado exitosamente.");
+            } else {
+                System.out.println("Número de vuelo no encontrado.");
+            }
+        } catch (Exception e) {
+            System.out.println("Ocurrió un error al eliminar el vuelo: " + e.getMessage());
+        }
+    }
 
     public static void gestionarUsuarios() {
         int opcion = 0;
@@ -135,9 +136,7 @@ public class MenuPrincipalAdministrador {
             try {
                 System.out.println("Usuarios registrados:");
                 for (Cliente usuario : baseDeDatos.getBaseDeDatosUsuarios().values()) {
-                    if (usuario instanceof Usuario) {
-                        System.out.println(usuario.getEmail());
-                    }
+                    System.out.println(usuario.getEmail());
                 }
                 System.out.println("1. Eliminar Usuario");
                 System.out.println("2. Regresar al Menú del Administrador");

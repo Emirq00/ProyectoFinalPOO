@@ -31,6 +31,8 @@ public class VueloRedondo extends Vuelo{
         }
     }
 
+    
+
     /**
      * Método en el que retorna toda la información de una compra de un ticket mediante un formato específico por lo que solamente se 
      * recomienda utilizarse cuando la compra del ticket esté por finalizar. La información retornada incluye:
