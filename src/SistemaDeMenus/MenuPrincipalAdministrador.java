@@ -8,6 +8,8 @@ import Organizacion.BaseDeDatosVuelos;
 import Tickets.FormatoTickets.Vuelo;
 import Tickets.FormatoTickets.VueloRedondo;
 
+import static SistemaDeMenus.Menu.vuelosDisponibles;
+
 public class MenuPrincipalAdministrador {
     private static Scanner scanner = new Scanner(System.in);
     private static boolean incorrectEntry;

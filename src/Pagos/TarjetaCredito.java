@@ -5,6 +5,7 @@ import Cuentas.Usuario;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Random;
 
 public class TarjetaCredito extends MetodoPago {
@@ -13,14 +14,16 @@ public class TarjetaCredito extends MetodoPago {
     private int cvv;
     private double limiteCredito;
     private static final Random random = new Random();
+    private String nombreTitular;
     private static final HashSet<Integer> listaTarjetas = new HashSet<>();
 
-    public TarjetaCredito(InformacionPago infor) {
-        super("Tarjeta de Crédito", "Pago con tarjeta bancaria", infor);
+    public TarjetaCredito(String nombreTitular) {
+        super("Tarjeta de Crédito", "Pago con tarjeta bancaria");
         this.numeroTarjeta = generarNumeroTarjetaUnico();
         this.cvv = random.nextInt(100, 999);
         this.limiteCredito = 50000; // Límite inicial estándar
         this.fechaExpiracion = LocalDate.of(2028, 11, 16);
+        this.nombreTitular=nombreTitular;
     }
 
     private int generarNumeroTarjetaUnico() {
@@ -32,10 +35,10 @@ public class TarjetaCredito extends MetodoPago {
     }
 
     @Override
-    public void pagar(double monto, InformacionPago informacionPago) {
-        if (validarMetodoPago(monto, informacionPago)) {
-            this.limiteCredito -= monto;
-            System.out.println("Pago realizado exitosamente por un monto de: " + monto);
+    public void pagar(InformacionPago informacionPago) {
+        if (validarMetodoPago(this.limiteCredito, informacionPago)) {
+            this.limiteCredito -= informacionPago.getMonto();
+            System.out.println("Pago realizado exitosamente por un monto de: " + informacionPago.getMonto());
         } else {
             System.out.println("Proceso de pago rechazado. Intente nuevamente.");
         }
@@ -54,7 +57,8 @@ public class TarjetaCredito extends MetodoPago {
             return false;
         }
         return this.numeroTarjeta == informacionPago.getNumeroTarjeta()
-                && this.cvv == informacionPago.getCvv();
+                && this.cvv == informacionPago.getCvv() && Objects.equals(this.nombreTitular, informacionPago.getNombreTitular())
+                && this.fechaExpiracion==informacionPago.getFecha();
     }
 
 

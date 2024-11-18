@@ -3,69 +3,76 @@ package Pagos;
 import Cuentas.Cliente;
 import Cuentas.Usuario;
 
-public class Transferencia extends MetodoPago {
-    private InformacionPago cuentaOrigen;
-    private double monto;
-    private String estado;
+import java.util.HashSet;
+import java.util.Random;
 
-    public Transferencia(InformacionPago cuentaOrigen) {
-        super("Transferencia Bancaria", "Pago mediante transferencia entre cuentas", cuentaOrigen);
-        if (cuentaOrigen == null) {
-            throw new IllegalArgumentException("La cuenta origen no puede ser nula.");
-        }
-        this.cuentaOrigen = cuentaOrigen;
+public class Transferencia extends MetodoPago {
+    private int cuenta;
+    private double montDisponible;
+    private String estado;
+    private static final HashSet<Integer> listaTarjetas = new HashSet<>();
+    private static final Random random = new Random();
+
+    public Transferencia() {
+        super("Transferencia Bancaria", "Pago mediante transferencia entre cuentas");
+        this.montDisponible=0.0;
+        this.cuenta=generarNumeroUnico();
         this.estado = "Pendiente";
     }
 
+    private int generarNumeroUnico() {
+        int numero;
+        do {
+            numero = random.nextInt((99999999 - 10000000) + 1) + 10000000;
+        } while (!listaTarjetas.add(numero));
+        return numero;
+    }
+
     @Override
-    public void pagar(double monto, InformacionPago informacionPago) {
-        if (!validarMetodoPago(monto, informacionPago)) {
+    public void pagar(InformacionPago informacionPago) {
+        if (!validarMetodoPago(this.montDisponible, informacionPago)) {
             System.out.println("La transferencia no pudo completarse. Verifique los datos.");
             return;
         }
 
         // Simular el descuento de fondos de la cuenta origen
-        this.cuentaOrigen.restarFondos(monto);
-        this.monto = monto;
+        this.montDisponible-= informacionPago.getMonto();
         this.estado = "Completada";
 
-        System.out.println("Transferencia completada exitosamente. Monto: " + monto);
+        System.out.println("Transferencia completada exitosamente. Monto de la transferencia: " + informacionPago.getMonto());
+        System.out.println("Fondos restantes: "+montDisponible);
     }
 
     @Override
-    public boolean validarMetodoPago(double costo, InformacionPago informacionPago) {
+    public boolean validarMetodoPago(double montDisponible, InformacionPago informacionPago) {
         // Validar si el monto es válido
-        if (costo <= 0) {
+        if (montDisponible <= 0) {
             System.out.println("El monto de la transferencia debe ser mayor a cero.");
             return false;
         }
 
         // Validar si la cuenta origen tiene fondos suficientes
-        if (cuentaOrigen.getFondos()>=costo) {
+        if (montDisponible < informacionPago.getMonto()) {
             System.out.println("Fondos insuficientes en la cuenta de origen.");
             return false;
         }
-
+        if(cuenta!=informacionPago.getNumeroTarjeta()){
+            System.out.println("El numero de cuenta no coincide");
+            return false;
+        }
         return true;
     }
 
-    public InformacionPago getCuentaOrigen() {
-        return cuentaOrigen;
-    }
 
     public void agregarFondos(double monto){
-        getInfo().agregarFondos(monto);
-    }
-
-    public void RestarMonto(double monto){
-        getInfo().restarFondos(monto);
+        montDisponible+=monto;
     }
 
     public double getMonto() {
-        return monto;
+        return montDisponible;
     }
 
-    public String getEstado() {
-        return estado;
+    public int getCuenta() {
+        return cuenta;
     }
 }
