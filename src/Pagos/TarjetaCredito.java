@@ -17,13 +17,13 @@ public class TarjetaCredito extends MetodoPago {
     private String nombreTitular;
     private static final HashSet<Integer> listaTarjetas = new HashSet<>();
 
-    public TarjetaCredito(String nombreTitular) {
+    public TarjetaCredito(InformacionPago info) {
         super("Tarjeta de Crédito", "Pago con tarjeta bancaria");
         this.numeroTarjeta = generarNumeroTarjetaUnico();
         this.cvv = random.nextInt(100, 999);
         this.limiteCredito = 50000; // Límite inicial estándar
         this.fechaExpiracion = LocalDate.of(2028, 11, 16);
-        this.nombreTitular=nombreTitular;
+        this.nombreTitular=info;
     }
 
     private int generarNumeroTarjetaUnico() {

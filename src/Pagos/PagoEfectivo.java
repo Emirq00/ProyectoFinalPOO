@@ -46,4 +46,9 @@ public class PagoEfectivo extends MetodoPago {
     public void agregarCash(double monto){
         this.cantidad+=monto;
     }
+
+    public void agregarEfectivo(double monto) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'agregarEfectivo'");
+    }
 }

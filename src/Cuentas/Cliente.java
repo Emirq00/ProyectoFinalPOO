@@ -2,22 +2,21 @@ package Cuentas;
 
 import Pagos.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Cliente extends Usuario implements Observer, Serializable {
-
+public class Cliente extends Usuario implements Observer{
+    //private List<Compra> comprasRealizadas;
     private List<MetodoPago> metodosPagos;
-
+    
     public Cliente() {
         //this.comprasRealizadas = new ArrayList<>();
         this.metodosPagos = new ArrayList<>();
     }
-    public Cliente(String nombre, int edad, String password, String email){
-        super(nombre, edad, password, email);
+    public Cliente(String nombre, int edad, String email, String password){
+        super(nombre, edad, email, password);
         this.metodosPagos = new ArrayList<>();
     }
 
@@ -73,42 +72,6 @@ public class Cliente extends Usuario implements Observer, Serializable {
         } while (opcion != 4);
     }
 
-    public void verMetodosPago(){
-        if(getMetodosPagos()==null){
-            System.out.println("Lo sentimos, no cuenta con ningun metodo de pago registrado");
-        }
-        else{
-            for(MetodoPago x:getMetodosPagos()){
-                System.out.println("-----------------------");
-                System.out.println("Nombre del propietario: "+getNombre());
-                System.out.println("Tipo: "+x.getTipo());
-                System.out.println("Detalles: "+x.getDetalles());
-                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
-                    System.out.println("Cvv: "+((TarjetaCredito) x).getCvv());
-                }
-                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
-                    System.out.println("Numero de tarjeta: "+((TarjetaCredito) x).getNumeroTarjeta());
-                }
-                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
-                    System.out.println("Fecha de expiración: "+((TarjetaCredito) x).getFechaExpiracion());
-                }
-                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
-                    System.out.println("Limite de crédito: "+((TarjetaCredito) x).getLimiteCredito());
-                }
-                if(x.getClass().getName().equals("Pagos.PagoEfectivo")){
-                    System.out.println("Cash: "+((PagoEfectivo) x).getCashDisponible());
-                }
-                if(x.getClass().getName().equals("Pagos.Transferencia")){
-                    System.out.println("Fondos: "+((Transferencia) x).getMonto());
-                }
-                if(x.getClass().getName().equals("Pagos.Transferencia")){
-                    System.out.println("Cuenta asociado: "+((Transferencia) x).getCuenta());
-                }
-                System.out.println("-----------------------");
-            }
-        }
-    }
-
     private void agregarPagoEfectivo(Scanner cin) {
         PagoEfectivo cash = null;
         boolean existeMetodo = false;
@@ -119,25 +82,20 @@ public class Cliente extends Usuario implements Observer, Serializable {
                 break;
             }
         }
-
         if (!existeMetodo) {
-            cash=new PagoEfectivo();
+            InformacionPago info = new InformacionPago(0, 0, getNombre());
+            cash = new PagoEfectivo(info);
             getMetodosPagos().add(cash);
             System.out.println("Método de pago en efectivo agregado exitosamente.");
         }
-        try{
-            System.out.print("Indique la cantidad de efectivo a ingresar: ");
-            double monto = cin.nextDouble();
-            if (monto < 0) {
-                System.out.println("No puede ingresar cantidades negativas.");
-            } else {
-                cash.agregarCash(monto);
-                System.out.println("Monto ingresado exitosamente.");
-            }
-        }catch (InputMismatchException e){
-            System.out.println("Entrada inválida, se esperan valores numéricos");
+        System.out.print("Indique la cantidad de efectivo a ingresar: ");
+        double monto = cin.nextDouble();
+        if (monto < 0) {
+            System.out.println("No puede ingresar cantidades negativas.");
+        } else {
+            cash.agregarEfectivo(monto);
+            System.out.println("Monto ingresado exitosamente.");
         }
-
     }
 
     private void agregarTransferencia(Scanner cin) {
@@ -152,23 +110,19 @@ public class Cliente extends Usuario implements Observer, Serializable {
             }
         }
         if (!existeMetodo) {
-            transferencia = new Transferencia();
+            InformacionPago info = new InformacionPago(0, 0, getNombre());
+            transferencia = new Transferencia(info);
             getMetodosPagos().add(transferencia);
             System.out.println("Método de pago por transferencia agregado exitosamente.");
         }
         System.out.print("Indique el monto a ingresar: ");
-        try{
-            double cantidad = cin.nextDouble();
-            if (cantidad < 0) {
-                System.out.println("No se pueden ingresar montos negativos.");
-            } else {
-                transferencia.agregarFondos(cantidad);
-                System.out.println("Operación exitosa.");
-            }
-        }catch (InputMismatchException e){
-            System.out.println("Entrada inválida, se esperan valores numéricos");
+        double cantidad = cin.nextDouble();
+        if (cantidad < 0) {
+            System.out.println("No se pueden ingresar montos negativos.");
+        } else {
+            transferencia.agregarFondos(cantidad);
+            System.out.println("Operación exitosa.");
         }
-
     }
 
     private void agregarTarjetaCredito(Scanner cin) {
@@ -182,7 +136,18 @@ public class Cliente extends Usuario implements Observer, Serializable {
             }
         }
         if (!existeMetodo) {
-            tarjeta = new TarjetaCredito(getNombre());
+            // Solicitar datos al usuario
+            System.out.print("Ingrese su número de tarjeta (8 dígitos): ");
+            int numeroTarjeta = cin.nextInt();
+            System.out.print("Ingrese su CVV (3 dígitos): ");
+            int cvv = cin.nextInt();
+            cin.nextLine(); // Limpiar buffer
+            System.out.print("Ingrese el nombre del titular: ");
+            String nombreTitular = cin.nextLine();
+
+            // Crear InformacionPago con los datos ingresados
+            InformacionPago info = new InformacionPago(numeroTarjeta, cvv, nombreTitular);
+            tarjeta = new TarjetaCredito(info);
             getMetodosPagos().add(tarjeta);
             System.out.println("Tarjeta de crédito agregada exitosamente.");
         }
@@ -195,4 +160,6 @@ public class Cliente extends Usuario implements Observer, Serializable {
             System.out.println("Hola, " + getNombre() + ", el asiento ya no está disponible.");
         }
     }
+
+
 }
