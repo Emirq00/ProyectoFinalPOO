@@ -3,6 +3,7 @@ package Tickets.FormatoTickets;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.Random;
 
 //import java.lang.*;
@@ -12,7 +13,7 @@ import java.util.Random;
  * caros entre los 3 tickets pero con mayores beneficios que los anteriores. Dentro de esta clase se tendrá el método para mandar a 
  * imprimir el ticket mediante un archivo de texto que se almacenará para consultas fuera del programa.
  */
-public class VipTicket extends Ticket{
+public class VipTicket extends Ticket implements Serializable {
 
     /**
      * Método constructor en el que asociaremos el puente entre el ticket y el tipo de vuelo a realizar

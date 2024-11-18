@@ -2,12 +2,13 @@ package Cuentas;
 
 import Pagos.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Cliente extends Usuario implements Observer{
+public class Cliente extends Usuario implements Observer, Serializable {
 
     private List<MetodoPago> metodosPagos;
 
@@ -15,8 +16,8 @@ public class Cliente extends Usuario implements Observer{
         //this.comprasRealizadas = new ArrayList<>();
         this.metodosPagos = new ArrayList<>();
     }
-    public Cliente(String nombre, int edad, String email, String password){
-        super(nombre, edad, email, password);
+    public Cliente(String nombre, int edad, String password, String email){
+        super(nombre, edad, password, email);
         this.metodosPagos = new ArrayList<>();
     }
 

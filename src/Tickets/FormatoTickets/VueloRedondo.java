@@ -1,5 +1,6 @@
 package Tickets.FormatoTickets;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  * de ida al destino como un vuelo de regreso al origen separados por un periodo de tiempo definido por el administrador, el precio de estos
  * vuelos se recomienda ser mayor al de un vuelo simple debido a que se contemplan dos vuelos en lugar de uno solo.
  */
-public class VueloRedondo extends Vuelo{
+public class VueloRedondo extends Vuelo implements Serializable {
 
     public VueloRedondo(String origen, String destino, LocalDateTime fecha, double precio, int tiempoDias){
         this.tipoDeVuelo="Redondo";

@@ -50,16 +50,22 @@ public class BaseDeDatos implements Serializable {
     }
 
     public boolean validarUsuario(String email, String password) {
-        Cliente usuario = baseDeDatosUsuarios.get(email);
-        return usuario != null && password.equals(usuario.getPassword());
-
+        Cliente usuario = obtenerUsuario(email);
+        if(usuario == null){
+            return false;
+        }
+        return usuario.getPassword().equals(password);
     }
+
 
     public boolean validarAdministrador(String email, String password) {
-        Administrador administrador = baseDeDatosAdministradores.get(email);
-        return administrador != null && password.equals(usuario.getPassword());
-
+        Administrador administrador = obtenerAdministrador(email);
+        if(administrador == null){
+            return false;
+        }
+        return administrador.getPassword().equals(password);
     }
+
 
     public String obtenerRol(String email) {
         if (baseDeDatosAdministradores.containsKey(email)) {
@@ -85,10 +91,12 @@ public class BaseDeDatos implements Serializable {
             baseDeDatosUsuarios = (HashMap<String, Cliente>) ois.readObject();
             baseDeDatosAdministradores = (HashMap<String, Administrador>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error al cargar la base de datos: " + e.getMessage());
             baseDeDatosUsuarios = new HashMap<>();
             baseDeDatosAdministradores = new HashMap<>();
         }
     }
+
 
     public HashMap<String, Cliente> getBaseDeDatosUsuarios() {
         return baseDeDatosUsuarios;

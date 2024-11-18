@@ -10,7 +10,7 @@ import java.util.Random;
  * entre los 3 tipos de tickets. Dentro de esta clase se tendrá el método para mandar a imprimir el ticket mediante un archivo de texto
  * que se almacenará para consultas fuera del programa.
  */
-public class StandardTicket extends Ticket{
+public class StandardTicket extends Ticket implements Serializable{
 
     /**
      * Método constructor en el que asociaremos el puente entre el ticket y el tipo de vuelo a realizar

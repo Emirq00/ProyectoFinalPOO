@@ -1,12 +1,13 @@
 package Tickets.FormatoTickets;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Clase en la que se asocia toda la información referente a los vuelos simples, este tipo de vuelos se caracterizan por tener 
  * unicamente un vuelo del origen al destino. El precio de estos vuelos queda a criterio del administrador.
  */
-public class VueloSimple extends Vuelo{
+public class VueloSimple extends Vuelo implements Serializable {
 
     public VueloSimple(String origen, String destino, LocalDateTime fecha, int precio){
         this.tipoDeVuelo="Simple";
