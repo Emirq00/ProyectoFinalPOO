@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  */
 public class VueloRedondo extends Vuelo{
 
-    public VueloRedondo(String origen, String destino, LocalDateTime fecha, int precio, int tiempoDias){
+    public VueloRedondo(String origen, String destino, LocalDateTime fecha, double precio, int tiempoDias){
         this.tipoDeVuelo="Redondo";
         this.origen=origen;
         this.destino=destino;
