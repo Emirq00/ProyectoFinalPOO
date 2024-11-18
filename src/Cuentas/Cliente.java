@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Cliente extends Usuario implements Observer{
-    //private List<Compra> comprasRealizadas;
+
     private List<MetodoPago> metodosPagos;
 
     public Cliente() {
@@ -100,6 +100,9 @@ public class Cliente extends Usuario implements Observer{
                 if(x.getClass().getName().equals("Pagos.Transferencia")){
                     System.out.println("Fondos: "+((Transferencia) x).getMonto());
                 }
+                if(x.getClass().getName().equals("Pagos.Transferencia")){
+                    System.out.println("Cuenta asociado: "+((Transferencia) x).getCuenta());
+                }
                 System.out.println("-----------------------");
             }
         }
@@ -115,19 +118,25 @@ public class Cliente extends Usuario implements Observer{
                 break;
             }
         }
+
         if (!existeMetodo) {
             cash=new PagoEfectivo();
             getMetodosPagos().add(cash);
             System.out.println("Método de pago en efectivo agregado exitosamente.");
         }
-        System.out.print("Indique la cantidad de efectivo a ingresar: ");
-        double monto = cin.nextDouble();
-        if (monto < 0) {
-            System.out.println("No puede ingresar cantidades negativas.");
-        } else {
-            cash.agregarCash(monto);
-            System.out.println("Monto ingresado exitosamente.");
+        try{
+            System.out.print("Indique la cantidad de efectivo a ingresar: ");
+            double monto = cin.nextDouble();
+            if (monto < 0) {
+                System.out.println("No puede ingresar cantidades negativas.");
+            } else {
+                cash.agregarCash(monto);
+                System.out.println("Monto ingresado exitosamente.");
+            }
+        }catch (InputMismatchException e){
+            System.out.println("Entrada inválida, se esperan valores numéricos");
         }
+
     }
 
     private void agregarTransferencia(Scanner cin) {
@@ -147,13 +156,18 @@ public class Cliente extends Usuario implements Observer{
             System.out.println("Método de pago por transferencia agregado exitosamente.");
         }
         System.out.print("Indique el monto a ingresar: ");
-        double cantidad = cin.nextDouble();
-        if (cantidad < 0) {
-            System.out.println("No se pueden ingresar montos negativos.");
-        } else {
-            transferencia.agregarFondos(cantidad);
-            System.out.println("Operación exitosa.");
+        try{
+            double cantidad = cin.nextDouble();
+            if (cantidad < 0) {
+                System.out.println("No se pueden ingresar montos negativos.");
+            } else {
+                transferencia.agregarFondos(cantidad);
+                System.out.println("Operación exitosa.");
+            }
+        }catch (InputMismatchException e){
+            System.out.println("Entrada inválida, se esperan valores numéricos");
         }
+
     }
 
     private void agregarTarjetaCredito(Scanner cin) {

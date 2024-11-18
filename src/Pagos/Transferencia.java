@@ -72,7 +72,7 @@ public class Transferencia extends MetodoPago {
         return montDisponible;
     }
 
-    public String getEstado() {
-        return estado;
+    public int getCuenta() {
+        return cuenta;
     }
 }

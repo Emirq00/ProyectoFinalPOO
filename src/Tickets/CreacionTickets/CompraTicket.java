@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 import Cuentas.Cliente;
@@ -235,46 +236,48 @@ public class CompraTicket{
                 break;
             }
         }
-        if(tarjeta!=null){
-            System.out.println("==== Pago con Tarjeta ====");
+        try{
+            if(tarjeta!=null){
+                System.out.println("==== Pago con Tarjeta ====");
 
-            // Solicitar los datos de la tarjeta
+                System.out.print("Número de tarjeta (8 dígitos): ");
+                int numTarjeta = cin.nextInt();
+                while (numTarjeta<10000000 || numTarjeta>99999999){
+                    System.out.println("Debe tener 8 digitos el numero de tarjeta");
+                    numTarjeta=cin.nextInt();
+                }
+                cin.nextLine();
+                System.out.print("Ingrese los tres números posteriores de su tarjeta (CVV): ");
+                int cvv = cin.nextInt();
+                cin.nextLine(); // Consumir el salto de línea pendiente
+                while (cvv < 100 || cvv > 999){
+                    System.out.println("Debe tener 3 digitos el cvv");
+                    cvv=cin.nextInt();
+                }
+                System.out.print("Nombre del propietario: ");
+                String nombreTitular = cin.nextLine();
+                System.out.print("Ingrese la fecha de expiración de la tarjeta (formato: dd-MM-yyyy): ");
+                String fecha = cin.nextLine();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate fechaExpiracion = LocalDate.parse(fecha, formatter);
 
-            System.out.print("Número de tarjeta (8 dígitos): ");
-            int numTarjeta = cin.nextInt();
-            while (numTarjeta<10000000 || numTarjeta>99999999){
-                System.out.println("Debe tener 8 digitos el numero de tarjeta");
-                numTarjeta=cin.nextInt();
+                InformacionPago infoPago = new InformacionPago();
+                infoPago.setMonto(monto);
+                infoPago.setNumeroTarjeta(numTarjeta);
+                infoPago.setCvv(cvv);
+                infoPago.setNombreTitular(nombreTitular);
+                infoPago.setFecha(fechaExpiracion);
+                tarjeta.pagar(infoPago);
             }
-            cin.nextLine();
-            System.out.print("Ingrese los tres números posteriores de su tarjeta (CVV): ");
-            int cvv = cin.nextInt();
-            cin.nextLine(); // Consumir el salto de línea pendiente
-            while (cvv < 100 || cvv > 999){
-                System.out.println("Debe tener 3 digitos el cvv");
-                cvv=cin.nextInt();
+            else{
+                System.out.println("Lo sentimos, no cuenta con metodo de pago usando Tarjeta de Credito");
             }
-            System.out.print("Nombre del propietario: ");
-            String nombreTitular = cin.nextLine();
-            System.out.print("Ingrese la fecha de expiración de la tarjeta (formato: dd-MM-yyyy): ");
-            String fecha = cin.nextLine();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate fechaExpiracion = LocalDate.parse(fecha, formatter);
-
-            // Crear la información de pago
-            InformacionPago infoPago = new InformacionPago();
-            infoPago.setMonto(monto);
-            infoPago.setNumeroTarjeta(numTarjeta);
-            infoPago.setCvv(cvv);
-            infoPago.setNombreTitular(nombreTitular);
-            infoPago.setFecha(fechaExpiracion);
-            tarjeta.pagar(infoPago);
+        }catch (InputMismatchException e){
+            System.out.println("Lo sentimos, entrada inválida");
         }
-        else{
-            System.out.println("Lo sentimos, no cuenta con metodo de pago usando Tarjeta de Credito");
+        catch (DateTimeParseException e){
+            System.out.println("Formato de fecha incorrecto");
         }
-
-
     }
 
     public static void menuTransferencia(Scanner cin, Cliente cliente, double monto) {
