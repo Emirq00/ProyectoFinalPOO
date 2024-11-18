@@ -73,21 +73,34 @@ public class Cliente extends Usuario implements Observer{
     }
 
     public void verMetodosPago(){
-        for(MetodoPago x:getMetodosPagos()){
-            System.out.println("Nombre del propietario: "+x.getInfo().getNombre());
-            System.out.println("Tipo: "+x.getTipo());
-            System.out.println("Detalles: "+x.getDetalles());
-            if(x.getInfo().getCvv()!=0){
-                System.out.println("Cvv: "+x.getInfo().getCvv());
-            }
-            if(x.getInfo().getNumeroTarjeta()!=0){
-                System.out.println("Numero de tarjeta: "+x.getInfo().getNumeroTarjeta());
-            }
-            if(x instanceof PagoEfectivo){
-                System.out.println("Cash: "+x.getInfo().getMontoEfectivo());
-            }
-            if(x instanceof Transferencia){
-                System.out.println("Fondos: "+x.getInfo().getFondos());
+        if(getMetodosPagos()==null){
+            System.out.println("Lo sentimos, no cuenta con ningun metodo de pago registrado");
+        }
+        else{
+            for(MetodoPago x:getMetodosPagos()){
+                System.out.println("-----------------------");
+                System.out.println("Nombre del propietario: "+getNombre());
+                System.out.println("Tipo: "+x.getTipo());
+                System.out.println("Detalles: "+x.getDetalles());
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Cvv: "+((TarjetaCredito) x).getCvv());
+                }
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Numero de tarjeta: "+((TarjetaCredito) x).getNumeroTarjeta());
+                }
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Fecha de expiración: "+((TarjetaCredito) x).getFechaExpiracion());
+                }
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Limite de crédito: "+((TarjetaCredito) x).getLimiteCredito());
+                }
+                if(x.getClass().getName().equals("Pagos.PagoEfectivo")){
+                    System.out.println("Cash: "+((PagoEfectivo) x).getCashDisponible());
+                }
+                if(x.getClass().getName().equals("Pagos.Transferencia")){
+                    System.out.println("Fondos: "+((Transferencia) x).getMonto());
+                }
+                System.out.println("-----------------------");
             }
         }
     }
@@ -103,8 +116,7 @@ public class Cliente extends Usuario implements Observer{
             }
         }
         if (!existeMetodo) {
-            InformacionPago info = new InformacionPago(0, 0, getNombre());
-            cash = new PagoEfectivo(info);
+            cash=new PagoEfectivo();
             getMetodosPagos().add(cash);
             System.out.println("Método de pago en efectivo agregado exitosamente.");
         }
@@ -113,7 +125,7 @@ public class Cliente extends Usuario implements Observer{
         if (monto < 0) {
             System.out.println("No puede ingresar cantidades negativas.");
         } else {
-            cash.agregarEfectivo(monto);
+            cash.agregarCash(monto);
             System.out.println("Monto ingresado exitosamente.");
         }
     }
@@ -130,8 +142,7 @@ public class Cliente extends Usuario implements Observer{
             }
         }
         if (!existeMetodo) {
-            InformacionPago info = new InformacionPago(0, 0, getNombre());
-            transferencia = new Transferencia(info);
+            transferencia = new Transferencia();
             getMetodosPagos().add(transferencia);
             System.out.println("Método de pago por transferencia agregado exitosamente.");
         }
@@ -156,18 +167,7 @@ public class Cliente extends Usuario implements Observer{
             }
         }
         if (!existeMetodo) {
-            // Solicitar datos al usuario
-            System.out.print("Ingrese su número de tarjeta (8 dígitos): ");
-            int numeroTarjeta = cin.nextInt();
-            System.out.print("Ingrese su CVV (3 dígitos): ");
-            int cvv = cin.nextInt();
-            cin.nextLine(); // Limpiar buffer
-            System.out.print("Ingrese el nombre del titular: ");
-            String nombreTitular = cin.nextLine();
-
-            // Crear InformacionPago con los datos ingresados
-            InformacionPago info = new InformacionPago(numeroTarjeta, cvv, nombreTitular);
-            tarjeta = new TarjetaCredito(info);
+            tarjeta = new TarjetaCredito(getNombre());
             getMetodosPagos().add(tarjeta);
             System.out.println("Tarjeta de crédito agregada exitosamente.");
         }

@@ -3,12 +3,10 @@ package Pagos;
 public abstract class MetodoPago {
     private String tipo;
     private String detalles;
-    private InformacionPago info;
 
-    public MetodoPago(String tipo, String detalles, InformacionPago info) {
+    public MetodoPago(String tipo, String detalles) {
         this.tipo = tipo;
         this.detalles = detalles;
-        this.info = info;
     }
 
     public String getTipo() {
@@ -23,15 +21,8 @@ public abstract class MetodoPago {
         return detalles;
     }
 
-    public void setDetalles(String detalles) {
-        this.detalles = detalles;
-    }
 
-    public InformacionPago getInfo() {
-        return info;
-    }
-
-    public abstract void pagar(double monto, InformacionPago informacionPago);
+    public abstract void pagar(InformacionPago informacionPago);
 
     public abstract boolean validarMetodoPago(double costo, InformacionPago informacionPago);
 }

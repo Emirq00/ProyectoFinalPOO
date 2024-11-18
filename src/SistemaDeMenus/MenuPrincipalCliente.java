@@ -49,7 +49,7 @@ public class MenuPrincipalCliente extends Menu{
             } while (incorrectEntry || decision<1 || decision>5);
 
             switch (decision) {
-                case 1->consultaVuelos(); 
+                case 1->consultaVuelos(cliente);
                 case 2->descargarBoletos();
                 case 3->cliente.addMetodoPago(scanner);
                 case 4->cliente.verMetodosPago();
@@ -65,8 +65,8 @@ public class MenuPrincipalCliente extends Menu{
      * Método que muestra todos los vuelos, permitiendo al usuario observar los vuelos disponibles, para ello accederemos a un archivo
      * de objetos en el que anteriormente el administrador habrá guardado los vuelos disponibles, junto con 5 vuelos de ejemplo.
      */
-    private static void consultaVuelos(){
-        Cliente cliente=null;
+    private static void consultaVuelos(Cliente cliente){
+
         boolean notRecognizedEntry=false;
         String decision;
         int numeroDeVuelosDisponibles=0;
