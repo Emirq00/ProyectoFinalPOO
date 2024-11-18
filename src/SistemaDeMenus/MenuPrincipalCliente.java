@@ -19,7 +19,7 @@ public class MenuPrincipalCliente extends Menu{
      * permitiendo al usuario realizar cualquier operación del sistema de manera ininterrumpida, para finalizar el programa el
      * usuario deberá ingresar la opción señalada en el menú como "Salir", permitiendo así romper el bucle while.
      */
-    public static void main(Cliente cliente){
+    public static void main(String[] args) {
         int decision=0;
         //Comenzamos siempre recuperando los vuelos disponibles del archivo de vuelos
         CompraTicket.iniciarVuelosPrueba();

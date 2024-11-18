@@ -7,13 +7,18 @@ public class BaseDeDatos implements Serializable {
     private static final long serialVersionUID = 1L;
     private HashMap<String, Cliente> baseDeDatosUsuarios = new HashMap<>();
     private HashMap<String, Administrador> baseDeDatosAdministradores = new HashMap<>();
-
+    private Cliente usuario;
+        
     public BaseDeDatos() {
         cargarDeArchivo();
         if (baseDeDatosAdministradores.isEmpty()) {
-            Administrador administrador = new Administrador("Admin", 30, "admin123", "admin@aeroviajes.com");
-            agregarAdministrador(administrador);
+            Administrador admin = new Administrador("Admin", 30, "admin123", "admin@aeroviajes.com");
+            agregarAdministrador(admin);
         }
+    }
+
+    public Cliente obtenerUsuario(){
+        return usuario;
     }
 
     public void agregarUsuario(Cliente usuario) {
