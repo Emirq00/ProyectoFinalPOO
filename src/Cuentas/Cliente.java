@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Cliente extends Usuario {
+public class Cliente extends Usuario implements Observer{
     //private List<Compra> comprasRealizadas;
     private List<MetodoPago> metodosPagos;
 
@@ -17,6 +17,7 @@ public class Cliente extends Usuario {
     }
     public Cliente(String nombre, int edad, String email, String password){
         super(nombre, edad, email, password);
+        this.metodosPagos = new ArrayList<>();
     }
 
 
@@ -69,6 +70,26 @@ public class Cliente extends Usuario {
             }
 
         } while (opcion != 4);
+    }
+
+    public void verMetodosPago(){
+        for(MetodoPago x:getMetodosPagos()){
+            System.out.println("Nombre del propietario: "+x.getInfo().getNombre());
+            System.out.println("Tipo: "+x.getTipo());
+            System.out.println("Detalles: "+x.getDetalles());
+            if(x.getInfo().getCvv()!=0){
+                System.out.println("Cvv: "+x.getInfo().getCvv());
+            }
+            if(x.getInfo().getNumeroTarjeta()!=0){
+                System.out.println("Numero de tarjeta: "+x.getInfo().getNumeroTarjeta());
+            }
+            if(x instanceof PagoEfectivo){
+                System.out.println("Cash: "+x.getInfo().getMontoEfectivo());
+            }
+            if(x instanceof Transferencia){
+                System.out.println("Fondos: "+x.getInfo().getFondos());
+            }
+        }
     }
 
     private void agregarPagoEfectivo(Scanner cin) {
@@ -149,6 +170,14 @@ public class Cliente extends Usuario {
             tarjeta = new TarjetaCredito(info);
             getMetodosPagos().add(tarjeta);
             System.out.println("Tarjeta de crédito agregada exitosamente.");
+        }
+    }
+    @Override
+    public void actualizar(boolean asientoDisponible) {
+        if (asientoDisponible) {
+            System.out.println("Hola, " + getNombre() + ", un asiento se ha liberado.");
+        } else {
+            System.out.println("Hola, " + getNombre() + ", el asiento ya no está disponible.");
         }
     }
 }

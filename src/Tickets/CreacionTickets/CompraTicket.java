@@ -42,35 +42,34 @@ public class CompraTicket{
      * @param vueloSeleccionado Vuelo seleccionado anteriormente por el usuario que se asignará al momento de la compra del ticket.
      */
     public static void comprarTicket(Vuelo vueloSeleccionado, Cliente cliente) {
-        boolean entradaInvalida = false, indesicion = false;
+        boolean entradaInvalida, indecision;
         Ticket ticket = null;
         do {
+            entradaInvalida = false;
+            indecision = false;
+
             vueloSeleccionado.mostrarAsientos();
             System.out.println("\n¿Qué tipo de ticket desea comprar?");
             System.out.println("1. Standard");
             System.out.println("2. Premium");
             System.out.println("3. VIP");
             System.out.println("4. Salir");
+            int opcionTipoTicket = -1;
             do {
-                entradaInvalida = false;
                 try {
                     System.out.print("Ingrese su entrada: ");
-                    int opcion = scanner.nextInt();
-                    switch(opcion){
-                        case 1-> ticket = new StandardTicket(vueloSeleccionado);
-                        case 2-> {
-                            ticket = new PremiumTicket(vueloSeleccionado);
-                            ticket.setPrecioVueloTicket(vueloSeleccionado.getPrecio()*1.4);;
-                        }
-                        case 3-> {
-                            ticket = new VipTicket(vueloSeleccionado);
-                            ticket.setPrecioVueloTicket(vueloSeleccionado.getPrecio()*1.9);
-                        }
-                        case 4-> {
+                    opcionTipoTicket = scanner.nextInt();
+                    scanner.nextLine(); // Consumir el salto de línea pendiente
+
+                    switch (opcionTipoTicket) {
+                        case 1 -> ticket = new StandardTicket(vueloSeleccionado);
+                        case 2 -> ticket = new PremiumTicket(vueloSeleccionado);
+                        case 3 -> ticket = new VipTicket(vueloSeleccionado);
+                        case 4 -> {
                             System.out.println("Regresando...");
                             return;
                         }
-                        default->{
+                        default -> {
                             System.out.println(" *Opción no válida");
                             entradaInvalida = true;
                         }
@@ -81,67 +80,75 @@ public class CompraTicket{
                     entradaInvalida = true;
                 }
             } while (entradaInvalida);
-            
-            scanner.nextLine();
-            String opcion=null;
+
+            String asientoSeleccionado = null;
             do {
                 entradaInvalida = false;
                 try {
                     System.out.print("Ingrese su asiento: ");
-                    opcion = scanner.nextLine();
-                    if(ticket.getVuelo().getAsientosDisponibles().containsKey(opcion)){
-                        if(ticket.getVuelo().getAsientosDisponibles().get(opcion)==1 && ticket instanceof StandardTicket){
+                    asientoSeleccionado = scanner.nextLine();
+                    if (ticket.getVuelo().getAsientosDisponibles().containsKey(asientoSeleccionado)) {
+                        int tipoAsiento = ticket.getVuelo().getAsientosDisponibles().get(asientoSeleccionado);
+                        if ((tipoAsiento == 1 && ticket instanceof StandardTicket) ||
+                                (tipoAsiento == 2 && ticket instanceof PremiumTicket) ||
+                                (tipoAsiento == 3 && ticket instanceof VipTicket)) {
                             System.out.println("Asiento reservado exitosamente");
-                            ticket.setAsiento(opcion);
-                        }else if(ticket.getVuelo().getAsientosDisponibles().get(opcion)==2 && ticket instanceof PremiumTicket){
-                            System.out.println("Asiento reservado exitosamente");
-                            ticket.setAsiento(opcion);
-
-                        }else if(ticket.getVuelo().getAsientosDisponibles().get(opcion)==3 && ticket instanceof VipTicket){
-                            System.out.println("Asiento reservado exitosamente");
-                            ticket.setAsiento(opcion);
+                            ticket.setAsiento(asientoSeleccionado);
                         } else {
                             System.out.println("Ingrese un asiento asociado al tipo de ticket seleccionado");
                             entradaInvalida = true;
                         }
-                    } else{
+                    } else {
                         System.out.println("Ingrese un asiento válido");
                         entradaInvalida = true;
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println(" *Ingrese una entrada numérica");
+                    System.out.println(" *Ingrese una entrada válida");
                     entradaInvalida = true;
                 }
             } while (entradaInvalida);
 
             System.out.println("\nResumen de compra:");
-            System.out.println(ticket.getVuelo().mostrarInformacionCompra(opcion, ticket.getTipoTicket()));
+
+            System.out.println(ticket.getVuelo().mostrarInformacionCompra(asientoSeleccionado, ticket.getTipoTicket()));
             System.out.println("¿Qué deseas hacer?");
             System.out.println("1. Proseguir al pago");
             System.out.println("2. Regresar a la selección de tickets");
             System.out.println("3. Regresar al menú principal");
+
+            int opcionPostResumen = -1;
             do {
                 entradaInvalida = false;
-                System.out.print("Ingrese su entrada: ");
-                int op = scanner.nextInt();
-                switch(op){
-                    case 1-> indesicion = false;
-                    case 2-> indesicion = true;
-                    case 3-> {
-                        System.out.println("Regresado...");
-                        return;
+                try {
+                    System.out.print("Ingrese su entrada: ");
+                    opcionPostResumen = scanner.nextInt();
+                    scanner.nextLine(); // Consumir el salto de línea pendiente
+
+                    switch (opcionPostResumen) {
+                        case 1 -> indecision = false;
+                        case 2 -> indecision = true;
+                        case 3 -> {
+                            System.out.println("Regresando...");
+                            return;
+                        }
+                        default -> {
+                            System.out.println(" *Opción no válida");
+                            entradaInvalida = true;
+                        }
                     }
-                    default->{
-                        System.out.println(" *Opción no válida");
-                        entradaInvalida = true;
-                    }
+                } catch (InputMismatchException e) {
+                    System.out.println(" *Ingrese una entrada numérica");
+                    scanner.nextLine();
+                    entradaInvalida = true;
                 }
             } while (entradaInvalida);
-            
-        } while (indesicion);
-        
-        int opcion=-1;
-        int costoVuelo=100;
+
+        } while (indecision);
+
+        // Obtener el costo real del ticket
+        double costoVuelo = 1000;
+
+        int opcionMetodoPago = -1;
         do {
             try {
                 System.out.println("==== Seleccione el método de pago ====");
@@ -150,10 +157,10 @@ public class CompraTicket{
                 System.out.println("3) Transferencia");
                 System.out.println("4) Salir del menú de compra");
                 System.out.print("Seleccione una opción: ");
-                opcion = scanner.nextInt();
-                scanner.nextLine(); // Consumir el salto de línea pendiente
+                opcionMetodoPago = scanner.nextInt();
+                scanner.nextLine();
 
-                switch (opcion) {
+                switch (opcionMetodoPago) {
                     case 1:
                         menuEfectivo(scanner, cliente, costoVuelo);
                         break;
@@ -173,53 +180,49 @@ public class CompraTicket{
                 System.out.println("Lo sentimos, solo se deben ingresar números");
                 scanner.nextLine(); // Limpiar el buffer
             }
-        } while (opcion != 4);
+        } while (opcionMetodoPago != 4);
 
-        //Ingresamos el nuevo ticket asociado a la cuenta
-        ObjectOutputStream fileOut=null;
-        try {
-            fileOut = new ObjectOutputStream(new FileOutputStream("src/Tickets/TicketsComprados/Fernando"));//Al final seria el nombre del usuario
+        // Guardar el ticket comprado
+        try (ObjectOutputStream fileOut = new ObjectOutputStream(new FileOutputStream("TicketsComprados/" + cliente.getNombre()))) {
             fileOut.writeObject(ticket);
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        
-        try {
-            fileOut.close();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error al guardar el ticket: " + e.getMessage());
         }
 
         System.out.println("¡Compra realizada con éxito!");
     }
 
+
     public static void menuEfectivo(Scanner cin, Cliente cliente, double monto) {
         System.out.println("==== Pago en Efectivo ====");
 
         PagoEfectivo pagoEfectivo = null;
-        // Verificar si el cliente ya tiene un método de pago en efectivo
-        for (MetodoPago metodo : cliente.getMetodosPagos()) {
-            if (metodo instanceof PagoEfectivo) {
-                pagoEfectivo = (PagoEfectivo) metodo;
-                break;
+        if(cliente.getMetodosPagos()!=null){
+            for (MetodoPago metodo : cliente.getMetodosPagos()) {
+                if (metodo instanceof PagoEfectivo) {
+                    pagoEfectivo = (PagoEfectivo) metodo;
+                    break;
+                }
             }
         }
+        else{
+            if (pagoEfectivo == null) {
+                // Crear un nuevo método de pago en efectivo
+                InformacionPago info = new InformacionPago(0, 0, cliente.getNombre());
+                pagoEfectivo = new PagoEfectivo(info);
+                cliente.getMetodosPagos().add(pagoEfectivo);
+            }
 
-        if (pagoEfectivo == null) {
-            // Crear un nuevo método de pago en efectivo
-            InformacionPago info = new InformacionPago(0, 0, cliente.getNombre());
-            pagoEfectivo = new PagoEfectivo(info);
-            cliente.getMetodosPagos().add(pagoEfectivo);
+            System.out.print("Ingrese la cantidad de efectivo disponible: ");
+            double efectivoDisponible = cin.nextDouble();
+            cin.nextLine(); // Consumir el salto de línea pendiente
+
+            pagoEfectivo.agregarEfectivo(efectivoDisponible);
+
+            // Realizar el pago
+            pagoEfectivo.pagar(monto, pagoEfectivo.getInfo());
         }
 
-        System.out.print("Ingrese la cantidad de efectivo disponible: ");
-        double efectivoDisponible = cin.nextDouble();
-        cin.nextLine(); // Consumir el salto de línea pendiente
-
-        pagoEfectivo.agregarEfectivo(efectivoDisponible);
-
-        // Realizar el pago
-        pagoEfectivo.pagar(monto, pagoEfectivo.getInfo());
     }
 
     public static void menuTarjeta(Scanner cin, Cliente cliente, double monto) {
