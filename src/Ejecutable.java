@@ -76,7 +76,7 @@ public class Ejecutable {
                 } else {
                     ver = true;
                     System.out.println("Inicio de sesión exitoso como Usuario");
-                    MenuPrincipalCliente.main(baseDeDatos.obtenerUsuario(email));
+                    MenuPrincipalCliente.menuUsuario();
                 }
             } else {
                 System.out.println("Datos incorrectos o email inválido, intente nuevamente");
