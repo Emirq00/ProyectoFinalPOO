@@ -1,8 +1,13 @@
 package SistemaDeMenus;
 
 import java.util.Scanner;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
+import java.util.HashMap;
 import Cuentas.*;
+import Tickets.CreacionTickets.CompraTicket;
+import Tickets.FormatoTickets.Vuelo;
+import Tickets.FormatoTickets.VueloRedondo;
 
 public class MenuPrincipalAdministrador {
     private static Scanner scanner = new Scanner(System.in);
@@ -90,17 +95,39 @@ public class MenuPrincipalAdministrador {
     }
 
     private static void agregarVuelo() {
-        System.out.print("Ingrese los detalles del vuelo: ");
-        String vuelo = scanner.nextLine();
-        vuelosSubject.agregarVuelo(vuelo);
+        int nuevoNumeroVuelo = vuelosDisponibles.size() + 1;
+        System.out.print("Ingrese el origen del vuelo: ");
+        String origen = scanner.nextLine();
+        System.out.print("Ingrese el destino del vuelo: ");
+        String destino = scanner.nextLine();
+        System.out.print("Ingrese la fecha y hora del vuelo (AAAA-MM-DDTHH:MM): ");
+        LocalDateTime fechaHora = LocalDateTime.parse(scanner.nextLine());
+        System.out.print("Ingrese el precio del vuelo: ");
+        double precio = scanner.nextDouble();
+        scanner.nextLine();  
+        System.out.print("Ingrese la duración del vuelo (en horas): ");
+        int duracion = scanner.nextInt();
+        scanner.nextLine();
+        Vuelo nuevoVuelo = new VueloRedondo(origen, destino, fechaHora, precio, duracion);
+        vuelosDisponibles.put(nuevoNumeroVuelo, nuevoVuelo);
+        vuelosSubject.agregarVuelo(nuevoVuelo);
         System.out.println("Vuelo agregado exitosamente.");
     }
-
+    
     private static void eliminarVuelo() {
         System.out.print("Ingrese el número del vuelo a eliminar: ");
-        String vuelo = scanner.nextLine();
-        System.out.println("Vuelo eliminado exitosamente.");
+        int numeroVuelo = scanner.nextInt();
+        scanner.nextLine(); 
+        if (vuelosDisponibles.containsKey(numeroVuelo)) {
+            Vuelo vuelo = vuelosDisponibles.remove(numeroVuelo);
+            vuelosSubject.eliminarVuelo(vuelo);
+            System.out.println("Vuelo eliminado exitosamente.");
+        } else {
+            System.out.println("Número de vuelo no encontrado.");
+        }
     }
+    
+
 
     public static void gestionarUsuarios() {
         int opcion = 0;
