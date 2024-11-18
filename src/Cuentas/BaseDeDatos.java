@@ -11,8 +11,8 @@ public class BaseDeDatos implements Serializable {
     public BaseDeDatos() {
         cargarDeArchivo();
         if (baseDeDatosAdministradores.isEmpty()) {
-            Administrador administrador = new Administrador("Admin", 30, "admin123", "admin@aeroviajes.com");
-            agregarAdministrador(administrador);
+            Administrador admin = new Administrador("Admin", 30, "admin123", "admin@aeroviajes.com");
+            agregarAdministrador(admin);
         }
     }
 
