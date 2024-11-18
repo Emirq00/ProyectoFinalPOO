@@ -6,9 +6,21 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Ejecutable {
+/**
+ * Clase principal del sistema Aeroviajes.
+ * Gestiona el flujo principal del programa, incluyendo el inicio de sesión, registro de usuarios y validación de datos.
+ */
+public class Main {
+    /**
+     * Base de datos del sistema que contiene información de usuarios y administradores.
+     */
     public static BaseDeDatos baseDeDatos = new BaseDeDatos();
 
+    /**
+     * Método principal que ejecuta el sistema de menú inicial.
+     *
+     * @param args argumentos de línea de comandos (no utilizados en este programa).
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcion = 0;
@@ -32,9 +44,8 @@ public class Ejecutable {
                         System.out.println("Ingrese sus datos");
                         System.out.print("Correo: ");
                         String email = scanner.nextLine();
-                        if(!validarEmail(email)){
-                            System.out.println("Direccion de e-mail invalida. Dominios aceptados " +
-                                    "(@gmail.com)" + " (@hotmail.com)"+" (@outlook.com)");
+                        if (!validarEmail(email)) {
+                            System.out.println("Dirección de email inválida. Dominios aceptados: (@gmail.com, @hotmail.com, @outlook.com)");
                             break;
                         }
                         System.out.print("Contraseña: ");
@@ -50,14 +61,12 @@ public class Ejecutable {
                         scanner.nextLine();
                         System.out.print("Correo: ");
                         String nuevoEmail = scanner.nextLine();
-                        if(!validarEmail(nuevoEmail)){
-                            System.out.println("Direccion de e-mail invalida. Dominios aceptados " +
-                                    "(@gmail.com)" + " (@hotmail.com)"+" (@outlook.com)");
+                        if (!validarEmail(nuevoEmail)) {
+                            System.out.println("Dirección de email inválida. Dominios aceptados: (@gmail.com, @hotmail.com, @outlook.com)");
                             break;
                         }
                         System.out.print("Contraseña: ");
                         String nuevoPassword = scanner.nextLine();
-
                         registrarUsuario(nombre, edad, nuevoEmail, nuevoPassword);
                         break;
                     case 3:
@@ -74,41 +83,50 @@ public class Ejecutable {
         scanner.close();
     }
 
+    /**
+     * Inicia sesión en el sistema con las credenciales proporcionadas.
+     * Verifica si el usuario o administrador existe en la base de datos y dirige al menú correspondiente.
+     *
+     * @param email    el correo electrónico del usuario.
+     * @param password la contraseña del usuario.
+     */
     public static void iniciarSesion(String email, String password) {
         esperarAleatoriamente();
-        boolean ver = false;
-
-        if ((baseDeDatos.validarUsuario(email, password) || baseDeDatos.validarAdministrador(email, password))) {
+        if (baseDeDatos.validarUsuario(email, password) || baseDeDatos.validarAdministrador(email, password)) {
             String rol = baseDeDatos.obtenerRol(email);
-            if (rol.equals("Administrador")) {
-                ver = true;
+            if ("Administrador".equals(rol)) {
                 System.out.println("Inicio de sesión exitoso como Administrador");
-                Cliente usuario = baseDeDatos.obtenerUsuario();
                 MenuPrincipalAdministrador.menuAdministrador();
-            } else {
-                ver = true;
+            } else if ("Usuario".equals(rol)) {
                 System.out.println("Inicio de sesión exitoso como Usuario");
                 MenuPrincipalCliente.menuUsuario(baseDeDatos.obtenerUsuario(email));
             }
         } else {
             System.out.println("Datos incorrectos o email inválido, intente nuevamente");
-
         }
-
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * Valida la dirección de correo electrónico y verifica que no esté registrado previamente.
+     *
+     * @param nombre   el nombre del usuario.
+     * @param edad     la edad del usuario.
+     * @param email    el correo electrónico del usuario.
+     * @param password la contraseña del usuario.
+     */
     public static void registrarUsuario(String nombre, int edad, String email, String password) {
         esperarAleatoriamente();
         boolean exito = false;
         do {
             try {
                 if (validarEmail(email) && baseDeDatos.obtenerUsuario(email) == null) {
-                    Cliente nuevoUsuario = new Cliente(nombre, edad, email, password);
+                    Cliente nuevoUsuario = new Cliente(nombre, edad, password, email);
                     baseDeDatos.agregarUsuario(nuevoUsuario);
                     System.out.println("Usuario registrado exitosamente.");
                     exito = true;
                 } else {
-                    System.out.println("El usuario ya está registrado o el email es inválido");
+                    System.out.println("El usuario ya está registrado o el email es inválido.");
                     exito = true;
                 }
             } catch (Exception e) {
@@ -121,8 +139,14 @@ public class Ejecutable {
         } while (!exito);
     }
 
+    /**
+     * Valida si una dirección de correo electrónico pertenece a uno de los dominios aceptados.
+     *
+     * @param email el correo electrónico a validar.
+     * @return true si el correo es válido, false en caso contrario.
+     */
     public static boolean validarEmail(String email) {
-        String[] dominiosValidos = {"@gmail.com", "@hotmail.com", "@outlook.com"};
+        String[] dominiosValidos = {"@gmail.com", "@hotmail.com", "@outlook.com", "@aeroviajes.com"};
         for (String dominio : dominiosValidos) {
             if (email.endsWith(dominio)) {
                 return true;
@@ -131,13 +155,18 @@ public class Ejecutable {
         return false;
     }
 
+    /**
+     * Simula un retraso aleatorio para representar procesamiento.
+     * Muestra un mensaje de "Procesando..." mientras se espera.
+     */
     public static void esperarAleatoriamente() {
         Random random = new Random();
-        int tiempoEspera = random.nextInt(3000);
+        System.out.println("Procesando...");
+        int tiempoEspera = random.nextInt(2000);
         try {
             Thread.sleep(tiempoEspera);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("Error durante la espera: " + e.getMessage());
         }
     }
 }

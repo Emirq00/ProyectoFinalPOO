@@ -1,9 +1,7 @@
 package Tickets.FormatoTickets;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Serializable;
+import java.io.*;
+import Cuentas.*;
 import java.util.Random;
 
 //import java.lang.*;
@@ -32,7 +30,7 @@ public class VipTicket extends Ticket implements Serializable {
      * que los que compraron ticket standard y premium, ademas de que se contará con obsequios por parte de la aerolínea.
      */
     @Override
-    public void imprimirTicket() {
+    public void imprimirTicket(Cliente cliente) {
         PrintWriter archivoImprimirBoleto;
         boolean QRTypeLine;     //Si true, entonces línea, caso contrario espacio
         Random random = new Random();
@@ -42,7 +40,7 @@ public class VipTicket extends Ticket implements Serializable {
             archivoImprimirBoleto.println("                       AEROVUELOS MÉXICO                   ");
             archivoImprimirBoleto.println("                                                                                ");
             archivoImprimirBoleto.println("      Boleto VIP - Vuelo "+vuelo.getTipoDeVuelo()                                  );
-            archivoImprimirBoleto.println("      Pasajero: "+" ");
+            archivoImprimirBoleto.println("      Pasajero: "+cliente.getNombre()                                              );
             archivoImprimirBoleto.println("      Fecha de vuelo: "+vuelo.getFecha()                                           );
             archivoImprimirBoleto.println("      Destino: "+vuelo.getOrigen()+"-"+vuelo.getDestino()                          );
             archivoImprimirBoleto.println("      Asiento: "+ getAsiento()                                                     );

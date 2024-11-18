@@ -28,7 +28,7 @@ public class Menu {
             int i = 1;
             while (true) {
                 try {
-                    vuelosDisponibles.put(i, (Vuelo) archivoObjetos.readObject());
+                    vuelosDisponibles.put(i, (Vuelo)archivoObjetos.readObject());
                     i++;
                 } catch (EOFException e) {
                     // Romper ciclo cuando se alcanza el final del archivo

@@ -2,6 +2,7 @@ package Tickets.FormatoTickets;
 
 import java.io.*;
 import java.util.Random;
+import Cuentas.*;
 
 //import java.lang.*;
 
@@ -27,7 +28,7 @@ public class StandardTicket extends Ticket implements Serializable{
      * tanto la información del vuelo comprado como información extra como el nombre de la persona, el número de recibo y la fecha de abordo
      */
     @Override
-    public void imprimirTicket(){
+    public void imprimirTicket(Cliente cliente){
 		PrintWriter archivoImprimirBoleto;
         boolean QRTypeLine;     //Si true, entonces línea, caso contrario espacio
         Random random = new Random();
@@ -37,7 +38,7 @@ public class StandardTicket extends Ticket implements Serializable{
             archivoImprimirBoleto.println("                       AEROVUELOS MÉXICO                   ");
             archivoImprimirBoleto.println("                                                                               ");
             archivoImprimirBoleto.println("      Boleto standar - Vuelo "+vuelo.getTipoDeVuelo()                         );
-            archivoImprimirBoleto.println("      Pasajero: "+" ");
+            archivoImprimirBoleto.println("      Pasajero: "+ cliente.getNombre()                                         );
             archivoImprimirBoleto.println("      Fecha de vuelo: "+vuelo.getFecha()                                          );
             archivoImprimirBoleto.println("      Destino: "+vuelo.getOrigen()+"-"+vuelo.getDestino()                         );
             archivoImprimirBoleto.println("      Asiento: "+ getAsiento()                                                    );

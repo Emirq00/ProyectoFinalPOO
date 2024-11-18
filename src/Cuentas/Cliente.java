@@ -2,36 +2,71 @@ package Cuentas;
 
 import Pagos.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Cliente extends Usuario implements Observer{
-    //private List<Compra> comprasRealizadas;
+/**
+ * Clase que representa un cliente en el sistema.
+ * Extiende la clase {@link Usuario} e implementa las interfaces {@link Observer} y {@link Serializable}.
+ * Permite gestionar los métodos de pago de un cliente y observar cambios en el estado de disponibilidad de servicios.
+ */
+public class Cliente extends Usuario implements Observer, Serializable {
+
+    /**
+     * Lista de métodos de pago registrados por el cliente.
+     */
     private List<MetodoPago> metodosPagos;
-    
+
+    /**
+     * Constructor por defecto.
+     * Inicializa la lista de métodos de pago vacía.
+     */
     public Cliente() {
-        //this.comprasRealizadas = new ArrayList<>();
-        this.metodosPagos = new ArrayList<>();
-    }
-    public Cliente(String nombre, int edad, String email, String password){
-        super(nombre, edad, email, password);
         this.metodosPagos = new ArrayList<>();
     }
 
+    /**
+     * Constructor que inicializa un cliente con información personal y una lista vacía de métodos de pago.
+     *
+     * @param nombre   el nombre del cliente.
+     * @param edad     la edad del cliente.
+     * @param password la contraseña del cliente.
+     * @param email    el correo electrónico del cliente.
+     */
+    public Cliente(String nombre, int edad, String password, String email) {
+        super(nombre, edad, password, email);
+        this.metodosPagos = new ArrayList<>();
+    }
 
+    /**
+     * Obtiene la lista de métodos de pago registrados por el cliente.
+     *
+     * @return una lista de métodos de pago.
+     */
     public List<MetodoPago> getMetodosPagos() {
         return metodosPagos;
     }
 
-
-
+    /**
+     * Permite al cliente visualizar las compras realizadas.
+     * Actualmente, la implementación retorna un valor vacío.
+     *
+     * @return una cadena representando las compras realizadas.
+     */
     public String verCompras() {
-        // Implementación
+        // Implementación pendiente
         return "";
     }
 
+    /**
+     * Permite al cliente agregar un método de pago mediante un menú interactivo.
+     * Los métodos disponibles son efectivo, transferencia bancaria y tarjeta de crédito.
+     *
+     * @param cin un objeto {@link Scanner} para la entrada de datos.
+     */
     public void addMetodoPago(Scanner cin) {
         int opcion = -1;
         do {
@@ -66,12 +101,56 @@ public class Cliente extends Usuario implements Observer{
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Solo se esperan valores numéricos.");
-                cin.nextLine(); // Limpiar el buffer
+                cin.nextLine();
             }
-
         } while (opcion != 4);
     }
 
+    /**
+     * Permite visualizar todos los métodos de pago registrados por el cliente.
+     * Si no hay métodos de pago registrados, se informa al usuario.
+     */
+    public void verMetodosPago() {
+        if (getMetodosPagos() == null || getMetodosPagos().isEmpty()) {
+            System.out.println("Lo sentimos, no cuenta con ningún método de pago registrado.");
+        } else {
+            for(MetodoPago x:getMetodosPagos()){
+                System.out.println("-----------------------");
+                System.out.println("Nombre del propietario: "+getNombre());
+                System.out.println("Tipo: "+x.getTipo());
+                System.out.println("Detalles: "+x.getDetalles());
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Cvv: "+((TarjetaCredito) x).getCvv());
+                }
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Numero de tarjeta: "+((TarjetaCredito) x).getNumeroTarjeta());
+                }
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Fecha de expiración: "+((TarjetaCredito) x).getFechaExpiracion());
+                }
+                if(x.getClass().getName().equals("Pagos.TarjetaCredito")){
+                    System.out.println("Limite de crédito: "+((TarjetaCredito) x).getLimiteCredito());
+                }
+                if(x.getClass().getName().equals("Pagos.PagoEfectivo")){
+                    System.out.println("Cash: "+((PagoEfectivo) x).getCashDisponible());
+                }
+                if(x.getClass().getName().equals("Pagos.Transferencia")){
+                    System.out.println("Fondos: "+((Transferencia) x).getMonto());
+                }
+                if(x.getClass().getName().equals("Pagos.Transferencia")){
+                    System.out.println("Cuenta asociado: "+((Transferencia) x).getCuenta());
+                }
+                System.out.println("-----------------------");
+            }
+        }
+    }
+
+    /**
+     * Agrega un método de pago en efectivo al cliente.
+     * Si ya existe uno, simplemente agrega más fondos.
+     *
+     * @param cin un objeto {@link Scanner} para la entrada de datos.
+     */
     private void agregarPagoEfectivo(Scanner cin) {
         PagoEfectivo cash = null;
         boolean existeMetodo = false;
@@ -82,24 +161,33 @@ public class Cliente extends Usuario implements Observer{
                 break;
             }
         }
+
         if (!existeMetodo) {
-            InformacionPago info = new InformacionPago(0, 0, getNombre());
-            cash = new PagoEfectivo(info);
+            cash = new PagoEfectivo();
             getMetodosPagos().add(cash);
             System.out.println("Método de pago en efectivo agregado exitosamente.");
         }
-        System.out.print("Indique la cantidad de efectivo a ingresar: ");
-        double monto = cin.nextDouble();
-        if (monto < 0) {
-            System.out.println("No puede ingresar cantidades negativas.");
-        } else {
-            cash.agregarEfectivo(monto);
-            System.out.println("Monto ingresado exitosamente.");
+        try {
+            System.out.print("Indique la cantidad de efectivo a ingresar: ");
+            double monto = cin.nextDouble();
+            if (monto < 0) {
+                System.out.println("No puede ingresar cantidades negativas.");
+            } else {
+                cash.agregarCash(monto);
+                System.out.println("Monto ingresado exitosamente.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada inválida, se esperan valores numéricos.");
         }
     }
 
+    /**
+     * Agrega un método de pago por transferencia al cliente.
+     * Si ya existe uno, simplemente agrega más fondos.
+     *
+     * @param cin un objeto {@link Scanner} para la entrada de datos.
+     */
     private void agregarTransferencia(Scanner cin) {
-        // Suponiendo que tienes una clase Transferencia
         Transferencia transferencia = null;
         boolean existeMetodo = false;
         for (MetodoPago x : getMetodosPagos()) {
@@ -110,23 +198,31 @@ public class Cliente extends Usuario implements Observer{
             }
         }
         if (!existeMetodo) {
-            InformacionPago info = new InformacionPago(0, 0, getNombre());
-            transferencia = new Transferencia(info);
+            transferencia = new Transferencia();
             getMetodosPagos().add(transferencia);
             System.out.println("Método de pago por transferencia agregado exitosamente.");
         }
         System.out.print("Indique el monto a ingresar: ");
-        double cantidad = cin.nextDouble();
-        if (cantidad < 0) {
-            System.out.println("No se pueden ingresar montos negativos.");
-        } else {
-            transferencia.agregarFondos(cantidad);
-            System.out.println("Operación exitosa.");
+        try {
+            double cantidad = cin.nextDouble();
+            if (cantidad < 0) {
+                System.out.println("No se pueden ingresar montos negativos.");
+            } else {
+                transferencia.agregarFondos(cantidad);
+                System.out.println("Operación exitosa.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Entrada inválida, se esperan valores numéricos.");
         }
     }
 
+    /**
+     * Agrega una tarjeta de crédito al cliente.
+     * Si ya existe una tarjeta registrada, no se permite agregar otra.
+     *
+     * @param cin un objeto {@link Scanner} para la entrada de datos.
+     */
     private void agregarTarjetaCredito(Scanner cin) {
-        TarjetaCredito tarjeta = null;
         boolean existeMetodo = false;
         for (MetodoPago x : getMetodosPagos()) {
             if (x instanceof TarjetaCredito) {
@@ -136,30 +232,19 @@ public class Cliente extends Usuario implements Observer{
             }
         }
         if (!existeMetodo) {
-            // Solicitar datos al usuario
-            System.out.print("Ingrese su número de tarjeta (8 dígitos): ");
-            int numeroTarjeta = cin.nextInt();
-            System.out.print("Ingrese su CVV (3 dígitos): ");
-            int cvv = cin.nextInt();
-            cin.nextLine(); // Limpiar buffer
-            System.out.print("Ingrese el nombre del titular: ");
-            String nombreTitular = cin.nextLine();
-
-            // Crear InformacionPago con los datos ingresados
-            InformacionPago info = new InformacionPago(numeroTarjeta, cvv, nombreTitular);
-            tarjeta = new TarjetaCredito(info);
+            TarjetaCredito tarjeta = new TarjetaCredito(getNombre());
             getMetodosPagos().add(tarjeta);
             System.out.println("Tarjeta de crédito agregada exitosamente.");
         }
     }
+
+    /**
+     * Método de la interfaz {@link Observer} que notifica al cliente sobre cambios en la disponibilidad de asientos.
+     *
+     * @param mensaje mensaje si un asiento está disponible.
+     */
     @Override
-    public void actualizar(boolean asientoDisponible) {
-        if (asientoDisponible) {
-            System.out.println("Hola, " + getNombre() + ", un asiento se ha liberado.");
-        } else {
-            System.out.println("Hola, " + getNombre() + ", el asiento ya no está disponible.");
-        }
+    public void actualizar(String mensaje) {
+        System.out.println("Hola, " + getNombre() + ". " + mensaje);
     }
-
-
 }

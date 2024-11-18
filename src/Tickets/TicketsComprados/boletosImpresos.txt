@@ -1,15 +1,15 @@
 ***************************************************************
                        AEROVUELOS MÉXICO                   
                                                                                
-      Boleto standar - Vuelo Simple
+      Boleto standar - Vuelo Redondo
       Pasajero:  
-      Fecha de vuelo: 02/12/2024 a las 15:30
-      Destino: México-España
-      Asiento: E16
+      Fecha de vuelo: 23/12/2024 a las 19:30
+      Destino: Mexico-Japon
+      Asiento: I12
  
  
-           ██ █ █  █  █ █  ██  ██ ██  ██  ██ █  ██ 
-           ██ █ █  █  █ █  ██  ██ ██  ██  ██ █  ██ 
-                        6408141567
+             █ █  █  ██ █  █ ██ ██ █ █ ██ █  ██  █ 
+             █ █  █  ██ █  █ ██ ██ █ █ ██ █  ██  █ 
+                        1944470828
  
 ***************************************************************

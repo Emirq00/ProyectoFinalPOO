@@ -5,18 +5,20 @@ import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import Cuentas.*;
 import Organizacion.BaseDeDatosVuelos;
-import Tickets.FormatoTickets.Vuelo;
-import Tickets.FormatoTickets.VueloRedondo;
+import Tickets.CreacionTickets.*;
+import Tickets.FormatoTickets.*;
 
 import static SistemaDeMenus.Menu.vuelosDisponibles;
 
-public class MenuPrincipalAdministrador {
+public class MenuPrincipalAdministrador extends Menu {
     private static Scanner scanner = new Scanner(System.in);
     private static boolean incorrectEntry;
     private static BaseDeDatos baseDeDatos = new BaseDeDatos();
     private static BaseDeDatosVuelos baseDeDatosVuelos = new BaseDeDatosVuelos();
 
     public static void menuAdministrador() {
+        CompraTicket.iniciarVuelosPrueba();
+        consultarTodosLosVuelosArchivo();
         int decision = 0;
         do {
             System.out.println("\n======== Bienvenido a nuestra página, Administrador ========");
@@ -46,18 +48,22 @@ public class MenuPrincipalAdministrador {
                     gestionarUsuarios();
                     break;
                 case 3:
-                    scanner.close();
-                    break;
+                    System.out.println("Regresando...");
+                    return;
                 default:
                     System.out.println("* Ingrese una opción válida");
             }
         } while (decision != 3);
 
         System.out.println("Saliendo...");
+        scanner.close();
     }
 
     public static void mostrarVuelos() {
         System.out.println("Mostrando vuelos disponibles...");
+        for(int i: vuelosDisponibles.keySet()){
+            System.out.println(i+".- "+vuelosDisponibles.get(i).mostrarInformacionVuelo());
+        }
         int opcion = 0;
         do {
             try {
@@ -156,6 +162,7 @@ public class MenuPrincipalAdministrador {
                         System.out.print("Ingrese el correo del usuario a eliminar: ");
                         String email = scanner.nextLine();
                         eliminarUsuario(email);
+                        
                         break;
                     case 2:
                         System.out.println("Regresando al menú del administrador...");
@@ -163,9 +170,8 @@ public class MenuPrincipalAdministrador {
                     default:
                         System.out.println("Ingrese una opción correcta");
                 }
-            } catch (Exception e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Ocurrió un error: " + e.getMessage());
-                scanner.nextLine();
             }
         } while (opcion != 2);
     }

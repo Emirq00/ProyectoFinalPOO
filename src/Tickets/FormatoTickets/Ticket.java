@@ -1,7 +1,7 @@
 package Tickets.FormatoTickets;
 
 import java.io.Serializable;
-import Cuentas.Usuario;
+import Cuentas.*;
 
 /**
  *  Clase abstracta en la que definimos la estructura principal de los diferentes tickets de compra que podrán ser comprados al momento 
@@ -85,6 +85,6 @@ public abstract class Ticket implements Serializable{
      * Método general en el que se definirá cómo se "imprimirán" los tickets dentro de nuestra computadora, ya que cada ticket contendrá
      * su forma de generar la impresión junto con información específica dependiendo la calidad del vuelo y el recorrido que realize. 
      */
-    public abstract void imprimirTicket();
+    public abstract void imprimirTicket(Cliente cliente);
     
 }
