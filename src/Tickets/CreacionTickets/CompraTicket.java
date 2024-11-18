@@ -17,7 +17,6 @@ public class CompraTicket{
 
     public static void iniciarVuelosPrueba() {
         ObjectOutputStream fileOut;
-        HashMap<Integer, Vuelo> vuelosMap = new HashMap<>();
         
         Vuelo vuelo1 = new VueloRedondo("Mexico", "Japon", LocalDateTime.of(2024, 12, 23, 19, 30), 70000, 7);
         Vuelo vuelo2 = new VueloRedondo("Uruguay", "Argentina", LocalDateTime.of(2025, 2, 4, 13, 0), 56000, 10);
@@ -25,15 +24,13 @@ public class CompraTicket{
         Vuelo vuelo4 = new VueloSimple("Canada", "Estados Unidos", LocalDateTime.of(2024, 12, 29, 21, 45), 10000);
         Vuelo vuelo5 = new VueloSimple("India", "China", LocalDateTime.of(2024, 12, 30, 20, 0), 24000);
         
-        vuelosMap.put(1, vuelo1);
-        vuelosMap.put(2, vuelo2);
-        vuelosMap.put(3, vuelo3);
-        vuelosMap.put(4, vuelo4);
-        vuelosMap.put(5, vuelo5);
-        
         try {
             fileOut = new ObjectOutputStream(new FileOutputStream("Vuelos"));
-            fileOut.writeObject(vuelosMap);
+            fileOut.writeObject(vuelo1);
+            fileOut.writeObject(vuelo2);
+            fileOut.writeObject(vuelo3);
+            fileOut.writeObject(vuelo4);
+            fileOut.writeObject(vuelo5);
             fileOut.close();
             System.out.println("Vuelos guardados exitosamente.");
         } catch (IOException e) {
@@ -190,7 +187,7 @@ public class CompraTicket{
         } while (opcionMetodoPago != 4);
 
         // Guardar el ticket comprado
-        try (ObjectOutputStream fileOut = new ObjectOutputStream(new FileOutputStream("TicketsComprados/" + cliente.getNombre()))) {
+        try (ObjectOutputStream fileOut = new ObjectOutputStream(new FileOutputStream("src/Tickets/TicketsComprados/"+cliente.getNombre()))) {
             fileOut.writeObject(ticket);
         } catch (IOException e) {
             System.out.println("Error al guardar el ticket: " + e.getMessage());
@@ -199,7 +196,13 @@ public class CompraTicket{
         System.out.println("¡Compra realizada con éxito!");
     }
 
-
+     /**
+     * Procesa el pago en efectivo.
+     *
+     * @param cin     {@link Scanner} para entrada del usuario.
+     * @param cliente el cliente que realiza el pago.
+     * @param monto   el monto a pagar.
+     */
     public static void menuEfectivo(Scanner cin, Cliente cliente, double monto) {
         System.out.println("==== Pago en Efectivo ====");
 
@@ -224,10 +227,15 @@ public class CompraTicket{
             pagoEfectivo.pagar(info);
         }
 
-
-
     }
 
+    /**
+     * Procesa el pago con tarjeta de crédito o débito.
+     *
+     * @param cin     {@link Scanner} para entrada del usuario.
+     * @param cliente el cliente que realiza el pago.
+     * @param monto   el monto a pagar.
+     */
     public static void menuTarjeta(Scanner cin, Cliente cliente, double monto) {
         TarjetaCredito tarjeta = null;
         for (MetodoPago metodo : cliente.getMetodosPagos()) {
@@ -280,11 +288,17 @@ public class CompraTicket{
         }
     }
 
+    /**
+     * Procesa el pago mediante transferencia bancaria.
+     *
+     * @param cin     {@link Scanner} para entrada del usuario.
+     * @param cliente el cliente que realiza el pago.
+     * @param monto   el monto a pagar.
+     */
     public static void menuTransferencia(Scanner cin, Cliente cliente, double monto) {
         System.out.println("==== Pago por Transferencia ====");
 
         Transferencia transferencia = null;
-        // Verificar si el cliente ya tiene un método de transferencia
         for (MetodoPago metodo : cliente.getMetodosPagos()) {
             if (metodo instanceof Transferencia) {
                 transferencia = (Transferencia) metodo;
@@ -304,20 +318,5 @@ public class CompraTicket{
             transferencia.pagar(info);
         }
 
-    }
-
-    // Método para comprar un ticket y asociarlo al vuelo
-    public static boolean pago(Ticket ticket) {
-        if (ticket instanceof StandardTicket && ticket.getVuelo().ticketsStandardDisponibles > 0) {
-            ticket.getVuelo().ticketsStandardDisponibles--;
-            return true;
-        } else if (ticket instanceof PremiumTicket && ticket.getVuelo().ticketsPremiumDisponibles > 0) {
-            ticket.getVuelo().ticketsPremiumDisponibles--;
-            return true;
-        } else if (ticket instanceof VipTicket && ticket.getVuelo().ticketsVipDisponibles > 0) {
-            ticket.getVuelo().ticketsVipDisponibles--;
-            return true;
-        }
-        return false;
     }
 }
