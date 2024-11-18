@@ -51,12 +51,14 @@ public class BaseDeDatos implements Serializable {
 
     public boolean validarUsuario(String email, String password) {
         Cliente usuario = baseDeDatosUsuarios.get(email);
-        return usuario != null && usuario.getPassword().equals(password);
+        return usuario != null && password.equals(usuario.getPassword());
+
     }
 
     public boolean validarAdministrador(String email, String password) {
         Administrador administrador = baseDeDatosAdministradores.get(email);
-        return administrador != null && administrador.getPassword().equals(password);
+        return administrador != null && password.equals(usuario.getPassword());
+
     }
 
     public String obtenerRol(String email) {

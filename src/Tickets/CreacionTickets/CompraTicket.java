@@ -153,7 +153,7 @@ public class CompraTicket{
         } while (indecision);
 
         // Obtener el costo real del ticket
-        double costoVuelo = 1000;
+        double costoVuelo = ticket.getPrecioVueloTicket();
 
         int opcionMetodoPago = -1;
         do {

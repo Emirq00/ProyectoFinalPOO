@@ -21,6 +21,7 @@ public class PremiumTicket extends Ticket{
     public PremiumTicket(Vuelo vuelo){
         super(vuelo);
         this.tipoTicket="Premium";
+        setPrecioVueloTicket(vuelo.precio+(vuelo.precio*1.4));
     }
 
     /**

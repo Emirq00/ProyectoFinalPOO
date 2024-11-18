@@ -2,6 +2,7 @@ import Cuentas.*;
 import SistemaDeMenus.*;
 
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -31,6 +32,11 @@ public class Ejecutable {
                         System.out.println("Ingrese sus datos");
                         System.out.print("Correo: ");
                         String email = scanner.nextLine();
+                        if(!validarEmail(email)){
+                            System.out.println("Direccion de e-mail invalida. Dominios aceptados " +
+                                    "(@gmail.com)" + " (@hotmail.com)"+" (@outlook.com)");
+                            break;
+                        }
                         System.out.print("Contraseña: ");
                         String password = scanner.nextLine();
                         iniciarSesion(email, password);
@@ -44,8 +50,14 @@ public class Ejecutable {
                         scanner.nextLine();
                         System.out.print("Correo: ");
                         String nuevoEmail = scanner.nextLine();
+                        if(!validarEmail(nuevoEmail)){
+                            System.out.println("Direccion de e-mail invalida. Dominios aceptados " +
+                                    "(@gmail.com)" + " (@hotmail.com)"+" (@outlook.com)");
+                            break;
+                        }
                         System.out.print("Contraseña: ");
                         String nuevoPassword = scanner.nextLine();
+
                         registrarUsuario(nombre, edad, nuevoEmail, nuevoPassword);
                         break;
                     case 3:
@@ -54,8 +66,8 @@ public class Ejecutable {
                     default:
                         System.out.println("Ingrese una opción correcta");
                 }
-            } catch (Exception e) {
-                System.out.println("Ocurrió un error: " + e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("Lo sentimos, entrada inválida");
                 scanner.nextLine();
             }
         } while (opcion != 3);
@@ -65,23 +77,24 @@ public class Ejecutable {
     public static void iniciarSesion(String email, String password) {
         esperarAleatoriamente();
         boolean ver = false;
-        do {
-            if (validarEmail(email) && (baseDeDatos.validarUsuario(email, password) || baseDeDatos.validarAdministrador(email, password))) {
-                String rol = baseDeDatos.obtenerRol(email);
-                if (rol.equals("Administrador")) {
-                    ver = true;
-                    System.out.println("Inicio de sesión exitoso como Administrador");
-                    Cliente usuario = baseDeDatos.obtenerUsuario();
-                    MenuPrincipalAdministrador.menuAdministrador();
-                } else {
-                    ver = true;
-                    System.out.println("Inicio de sesión exitoso como Usuario");
-                    MenuPrincipalCliente.menuUsuario();
-                }
+
+        if ((baseDeDatos.validarUsuario(email, password) || baseDeDatos.validarAdministrador(email, password))) {
+            String rol = baseDeDatos.obtenerRol(email);
+            if (rol.equals("Administrador")) {
+                ver = true;
+                System.out.println("Inicio de sesión exitoso como Administrador");
+                Cliente usuario = baseDeDatos.obtenerUsuario();
+                MenuPrincipalAdministrador.menuAdministrador();
             } else {
-                System.out.println("Datos incorrectos o email inválido, intente nuevamente");
+                ver = true;
+                System.out.println("Inicio de sesión exitoso como Usuario");
+                MenuPrincipalCliente.main(baseDeDatos.obtenerUsuario(email));
             }
-        } while (!ver);
+        } else {
+            System.out.println("Datos incorrectos o email inválido, intente nuevamente");
+
+        }
+
     }
 
     public static void registrarUsuario(String nombre, int edad, String email, String password) {

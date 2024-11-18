@@ -19,6 +19,7 @@ public class StandardTicket extends Ticket{
     public StandardTicket(Vuelo vuelo){
         super(vuelo);
         this.tipoTicket="Standard";
+        setPrecioVueloTicket(vuelo.precio);
     }
 
     /**
